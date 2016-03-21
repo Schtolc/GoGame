@@ -30,31 +30,7 @@ bool HelloWorld::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-    
-	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
-
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("GoGame", "fonts/Marker Felt.ttf", 24);
     
     // position the label on the center of the screen
     label->setPosition(Vec2(origin.x + visibleSize.width/2,
@@ -63,8 +39,28 @@ bool HelloWorld::init()
     // add the label as a child to this layer
     this->addChild(label, 1);
 
- 
-    
+    auto sprite = Sprite::create("/home/pavelgolubev345/Downloads/board.png");
+
+    sprite->setPosition(Vec2(origin.x+visibleSize.width/2, origin.y+visibleSize.height/2));
+    sprite->setScale(0.4);
+    this->addChild(sprite);
+
+    auto chip = Sprite::create("/home/pavelgolubev345/Downloads/chip.png");
+    chip->setScale(0.1);
+    chip->setPosition(Vec2(sprite->getPositionX()  - (sprite->getBoundingBox().size.width- 100*0.4)/18*4, sprite->getPositionY() +
+            (sprite->getBoundingBox().size.height-  100*0.4)/18*4));
+
+    this->addChild(chip,2);
+
+    auto bchip = Sprite::create("/home/pavelgolubev345/Downloads/chip.png");
+    bchip->setScale(0.1);
+    bchip->setPosition(Vec2(sprite->getPositionX()  + (sprite->getBoundingBox().size.width- 100*0.4)/18*7,
+                            sprite->getPositionY() - (sprite->getBoundingBox().size.height-  100*0.4)/18*2));
+
+
+    bchip->setColor(Color3B(0,0,0));
+    this->addChild(bchip,2);
+
     return true;
 }
 
