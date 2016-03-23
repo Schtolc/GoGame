@@ -15,13 +15,15 @@ USING_NS_CC;
 class Board {
 private:
     int matrix[19][19];
-    Sprite* boardSprite;
+    Sprite *boardSprite;
 public:
 
     Board();
 
     Sprite *getBoardSprite() const;
-    int& boardAt(int X, int Y);
+
+    //Геттер для матрицы
+    int &boardAt(int X, int Y);
 
     //Проверяем можно ли поставить фишку игрока team на позицию X,Y
     bool checkStep(int X, int Y, int team);

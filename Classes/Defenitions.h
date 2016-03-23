@@ -9,8 +9,8 @@
 
 //Параметры доски
 #define BOARD_SIZE 19
-#define BOARD_SCALE 0.4
-#define CHIP_SCALE 0.1
-#define PLAYER_AMOUNT 3
+#define BOARD_SCALE 0.4f
+#define CHIP_SCALE 0.1f
+#define PLAYER_AMOUNT 4
 
 #endif //MYGAME_DEFENITIONS_H

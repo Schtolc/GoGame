@@ -126,13 +126,13 @@ set(GAME_SRC
   Classes/AppDelegate.cpp
   Classes/HelloWorldScene.cpp
   ${PLATFORM_SPECIFIC_SRC}
-        Classes/Board.cpp Classes/Board.h Classes/Round.cpp Classes/Round.h)
+        Classes/Board.cpp Classes/Player.cpp)
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
   Classes/HelloWorldScene.h
   ${PLATFORM_SPECIFIC_HEADERS}
-        Classes/Board.cpp Classes/Board.h Classes/Defenitions.h Classes/Round.cpp Classes/Round.h)
+        Classes/Board.h Classes/Defenitions.h Classes/Player.h)
 
 if(GAME_HEADERS)
   if ( WIN32 )

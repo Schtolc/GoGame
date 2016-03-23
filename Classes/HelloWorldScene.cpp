@@ -16,63 +16,67 @@ Scene *HelloWorld::createScene() {
     return scene;
 }
 
-// on "init" you need to initialize your instance
 bool HelloWorld::init() {
 
     if (!Layer::init()) {
         return false;
     }
 
+    //Scene initialization
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    currentPlayer = &players[0];
 
+    //Adding board sprite
     board.getBoardSprite()->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     this->addChild(board.getBoardSprite());
 
+    //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
-
     listener1->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
-
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
-
 
     return true;
 }
 
 
-bool HelloWorld::placeChip(int X, int Y, int team) {
-    if (X < 0 || X > 18 || Y < 0 || Y > 18 || team < 0 || team > PLAYER_AMOUNT) {
-        std::cout << "Error - Invalid args (" << X << ", " << Y << ", " << team << ") for placeChip()" << std::endl;
+bool HelloWorld::placeChip(int X, int Y) {
+    //Проверяем ошибки входных данных
+    if (X < 0 || X > 18 || Y < 0 || Y > 18) {
+        std::cout << "Error - Invalid args (" << X << ", " << Y << ", " << currentPlayer->getPlayerNumber() <<
+        ") for placeChip()" <<
+        std::endl;
         return false;
     }
 
-    if (board.checkStep(X, Y, team)) {
+
+    if (board.checkStep(X, Y, currentPlayer->getPlayerNumber())) {
+
+        //Добавляем спрайт фишки. Здесь можно поизменять CHIP_SCALE чтобы нормальный размер доски был
         auto chip = Sprite::create("chip.png");
         chip->setScale(CHIP_SCALE);
 
         //Здесь надо просчитать координаты фишки которая должна поставиться на доску с координатой (X,Y)
-        chip->setPosition(
-                Vec2(board.getBoardSprite()->getPositionX() +
-                     (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) / 18 * (X - 9),
-                     board.getBoardSprite()->getPositionY() +
-                     (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) / 18 * (9 - Y)));
+        Vec2 pos(Vec2(board.getBoardSprite()->getPositionX() +
+                      (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) / 18 * (X - 9),
+                      board.getBoardSprite()->getPositionY() +
+                      (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) / 18 * (9 - Y)));
         //
 
+        chip->setPosition(pos);
         chip->setTag(X * 10 + Y);
-        switch (team) {
-            case 2:
-                chip->setColor(Color3B::BLACK);
-                break;
-            case 3:
-                chip->setColor(Color3B::GRAY);
-                break;
-        }
+        chip->setColor(currentPlayer->getChipColor());
         this->addChild(chip);
-        board.boardAt(X, Y) = team;
+
+        //Взаимодействуем с матрицей доски
+        board.boardAt(X, Y) = currentPlayer->getPlayerNumber();
+        update();
+
         return true;
     } else {
-        std::cout << "Error - Cannot place (" << X << ", " << Y << ", " << team <<
-        ") on the board. Chip already exit" << std::endl;
+        //Ошибка если попытка поставить в недопустимое место
+        std::cout << "Error - Cannot place (" << X << ", " << Y << ", " << currentPlayer->getPlayerNumber() <<
+        ") on the board." << std::endl;
         return false;
     }
 }
@@ -91,11 +95,24 @@ void HelloWorld::removeChip(int X, int Y) {
 
 
 bool HelloWorld::onTouchBegan(Touch *touch, Event *event) {
-    int X = rand()%19, Y = rand()%19, team = 1 + rand()%3;
-
+    int X = rand() % 19, Y = rand() % 19;
     Vec2 vector = touch->getLocation();
+
     //Здесь очередная магия с координатами - нужно зная координату касания (vector) вычислить позицию на доске
     // (X,Y) ближайшую к ней
-    placeChip(X,Y,team);
+
+    placeChip(X, Y);
     return true;
+}
+
+void HelloWorld::update() {
+
+    //Здесь надо изменять счет игррока в зависимости от поля и удалять фишки (removeChip)
+    //с доски если их съели. Также эта функция меняют сцену на чцену конца игры если игра окончена
+    //Так же необходимо менять текущего игрока - это я реализовал ниже
+    currentPlayer->setScore(100);
+    if (currentPlayer->getPlayerNumber() == PLAYER_AMOUNT - 1) {
+        currentPlayer = &players[0];
+    } else
+        currentPlayer++;
 }

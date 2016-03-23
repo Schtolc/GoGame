@@ -3,16 +3,19 @@
 
 #include "cocos2d.h"
 #include "Board.h"
-
+#include "Player.h"
+#include <thread>
+#include <chrono>
 
 USING_NS_CC;
 
-class HelloWorld : public cocos2d::Layer
-{
+class HelloWorld : public cocos2d::Layer {
 private:
     Board board;
+    Player *currentPlayer;
+    Player players[PLAYER_AMOUNT];
 public:
-    static cocos2d::Scene* createScene();
+    static cocos2d::Scene *createScene();
 
     virtual bool init();
 
@@ -20,12 +23,16 @@ public:
     CREATE_FUNC(HelloWorld);
 
     //Ставим фишку игрока team на позицию X,Y
-    bool placeChip(int X, int Y, int team);
+    bool placeChip(int X, int Y);
 
     //Убираем фишку с позиции X,Y
     void removeChip(int X, int Y);
 
-    bool onTouchBegan(Touch* touch, Event* event);
+    //Обработка событий ошибок
+    bool onTouchBegan(Touch *touch, Event *event);
+
+    //Логика игры (взаимодействие с доской)
+    void update();
 
 };
 
