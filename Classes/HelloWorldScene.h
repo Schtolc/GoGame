@@ -4,8 +4,8 @@
 #include "cocos2d.h"
 #include "Board.h"
 #include "Player.h"
-#include <thread>
-#include <chrono>
+#include <stdexcept>
+
 
 USING_NS_CC;
 

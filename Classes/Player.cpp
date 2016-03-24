@@ -31,6 +31,7 @@ int Player::getScore() const {
 }
 
 void Player::setScore(int score) {
+    assert(score >= 0);
     Player::score = score;
 }
 
@@ -39,6 +40,7 @@ int Player::getPlayerNumber() const {
 }
 
 void Player::setPlayerNumber(int num) {
+    assert(0 <= num && num < PLAYER_AMOUNT);
     playerNumber = num;
 }
 

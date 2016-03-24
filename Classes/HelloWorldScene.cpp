@@ -41,15 +41,11 @@ bool HelloWorld::init() {
 
 
 bool HelloWorld::placeChip(int X, int Y) {
+
     //Проверяем ошибки входных данных
-    if (X < 0 || X > 18 || Y < 0 || Y > 18) {
-        std::cout << "Error - Invalid args (" << X << ", " << Y << ", " << currentPlayer->getPlayerNumber() <<
-        ") for placeChip()" <<
-        std::endl;
-        return false;
-    }
+    assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
 
-
+    //Проверяем возможность поставить фишку на доску
     if (board.checkStep(X, Y, currentPlayer->getPlayerNumber())) {
 
         //Добавляем спрайт фишки. Здесь можно поизменять CHIP_SCALE чтобы нормальный размер доски был
@@ -61,8 +57,8 @@ bool HelloWorld::placeChip(int X, int Y) {
                       (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) / 18 * (X - 9),
                       board.getBoardSprite()->getPositionY() +
                       (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) / 18 * (9 - Y)));
-        //
 
+        //Параметры фишки
         chip->setPosition(pos);
         chip->setTag(X * 10 + Y);
         chip->setColor(currentPlayer->getChipColor());
@@ -71,25 +67,24 @@ bool HelloWorld::placeChip(int X, int Y) {
         //Взаимодействуем с матрицей доски
         board.boardAt(X, Y) = currentPlayer->getPlayerNumber();
         update();
-
         return true;
-    } else {
-        //Ошибка если попытка поставить в недопустимое место
-        std::cout << "Error - Cannot place (" << X << ", " << Y << ", " << currentPlayer->getPlayerNumber() <<
+    }
+    else {
+
+        //Предупреждение если попытка поставить в недопустимое место
+        std::cout << "Warning - Cannot place (" << X << ", " << Y << ", " << currentPlayer->getPlayerNumber() <<
         ") on the board." << std::endl;
         return false;
     }
 }
 
 void HelloWorld::removeChip(int X, int Y) {
-    if (X < 0 || X > 18 || Y < 0 || Y > 18) {
-        std::cout << "Error - Invalid args (" << X << ", " << Y << ") for removeChip()" << std::endl;
-        return;
-    }
+    assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
+
     if (this->getChildByTag(X * 10 + Y)) {
         this->removeChildByTag(X * 10 + Y);
     } else {
-        std::cout << "Warning - removing a chip (" << X << ", " << Y << ") what do not exist" << std::endl;
+        throw (std::invalid_argument("removing a Chip that do not exist"));
     }
 }
 

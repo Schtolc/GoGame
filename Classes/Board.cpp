@@ -16,11 +16,7 @@ Sprite *Board::getBoardSprite() const {
 
 
 bool Board::checkStep(int X, int Y, int currentPlayer) {
-    if (X < 0 || X > 18 || Y < 0 || Y > 18 || currentPlayer < 0 || currentPlayer >= PLAYER_AMOUNT) {
-        std::cout << "Error - Invalid args (" << X << ", " << Y << ", " << currentPlayer << ") for checkChip()" <<
-        std::endl;
-        return false;
-    }
+    assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18 && 0 <= currentPlayer && currentPlayer < PLAYER_AMOUNT);
 
     //Добавить логику проверяющую можно ли поставить фишку
     //т.е не занято ли поле или допустим ли ход
@@ -31,9 +27,6 @@ bool Board::checkStep(int X, int Y, int currentPlayer) {
 }
 
 int &Board::boardAt(int X, int Y) {
-    if (X < 0 || X > 18 || Y < 0 || Y > 18) {
-        std::cout << "Invalid matrix position (" << X << ", " << Y << ")" << std::endl;
-        return matrix[0][0];
-    }
+    assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
     return matrix[X][Y];
 }
