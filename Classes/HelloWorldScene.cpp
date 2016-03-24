@@ -95,12 +95,16 @@ void HelloWorld::removeChip(int X, int Y) {
 
 
 bool HelloWorld::onTouchBegan(Touch *touch, Event *event) {
-    int X = rand() % 19, Y = rand() % 19;
+    int X = 0, Y = 0;
     Vec2 vector = touch->getLocation();
 
     //Здесь очередная магия с координатами - нужно зная координату касания (vector) вычислить позицию на доске
     // (X,Y) ближайшую к ней
-
+    X = (vector.x - board.getBoardSprite()->getPositionX() - (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) / 18 * 0.5) * 18 /
+        (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) + 10;
+    Y = (vector.y - board.getBoardSprite()->getPositionY() - (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) / 18 * 0.5) * 18 /
+        (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) - 9;
+    Y = -Y;
     placeChip(X, Y);
     return true;
 }
