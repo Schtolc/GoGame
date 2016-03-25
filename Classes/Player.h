@@ -27,6 +27,8 @@ public:
 
     void setPlayerNumber(int num);
 
+    static void setPlayerAmount(int amount);
+
     Color3B getChipColor() const;
 };
 

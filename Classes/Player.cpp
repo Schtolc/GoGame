@@ -46,3 +46,7 @@ void Player::setPlayerNumber(int num) {
 Color3B Player::getChipColor() const {
     return chipColor;
 }
+
+void Player::setPlayerAmount(int amount){
+    playerAmount = amount;
+}

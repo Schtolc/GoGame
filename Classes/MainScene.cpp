@@ -29,9 +29,8 @@ bool MainScene::init() {
     //Scene initialization
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-    playerAmount = UserDefault::getInstance()->getIntegerForKey("PLAYER_AMOUNT", 0);
+    playerAmount = UserDefault::getInstance()->getIntegerForKey("PLAYER_AMOUNT");
     players = new Player[playerAmount]();
-    // std::cout  << players[0].getPlayerNumber() << " " << players[1].getPlayerNumber() << " " << players[2].getPlayerNumber() << " " << players[3].getPlayerNumber() << " " << std::endl;
     currentPlayer = &players[0];
 
     //Adding background
@@ -131,7 +130,7 @@ void MainScene::update() {
         currentPlayer = &players[0];
     } else
         currentPlayer++;
-    GoToGameOver(NULL);
+    //GoToGameOver(this);
 
 }
 

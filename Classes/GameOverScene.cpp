@@ -1,6 +1,7 @@
 #include "GameOverScene.h"
 #include "Defenitions.h"
 #include "PlayerMenuScene.h"
+#include "Player.h"
 
 USING_NS_CC;
 
@@ -71,6 +72,7 @@ bool GameOver::init()
 
 void GameOver::GoToGameScene( cocos2d::Ref *sender )
 {
+    Player::setPlayerAmount(0);
     auto scene = PlayerMenu::createScene();
     
     Director::getInstance( )->replaceScene( TransitionFade::create( TRANSITION_TIME, scene ) );
