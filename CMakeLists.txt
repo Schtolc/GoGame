@@ -124,15 +124,15 @@ endif( WIN32 )
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+        Classes/MainScene.cpp
   ${PLATFORM_SPECIFIC_SRC}
-        Classes/Board.cpp Classes/Player.cpp)
+        Classes/Board.cpp Classes/Player.cpp Classes/LogoScene.cpp Classes/MainMenuScene.cpp Classes/PlayerMenuScene.cpp Classes/GameOverScene.cpp)
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
-  Classes/HelloWorldScene.h
+        Classes/MainScene.h
   ${PLATFORM_SPECIFIC_HEADERS}
-        Classes/Board.h Classes/Defenitions.h Classes/Player.h)
+        Classes/Board.h Classes/Defenitions.h Classes/Player.h Classes/LogoScene.h Classes/MainMenuScene.h Classes/PlayerMenuScene.h Classes/GameOverScene.h)
 
 if(GAME_HEADERS)
   if ( WIN32 )

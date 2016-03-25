@@ -3,7 +3,6 @@
 //
 
 #include "Player.h"
-#include "iostream"
 
 int Player::playerAmount = 0;
 
