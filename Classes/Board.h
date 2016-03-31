@@ -14,19 +14,18 @@ USING_NS_CC;
 
 class Board {
 private:
-    int matrix[19][19];
     Sprite *boardSprite;
+    Layer *layer;
 public:
-
     Board();
 
-    Sprite *getBoardSprite() const;
+    void init(Layer *layer);
 
-    //Геттер для матрицы
-    int &boardAt(int X, int Y);
+    void placeChip(int X, int Y, int team);
 
-    //Проверяем можно ли поставить фишку игрока team на позицию X,Y
-    bool checkStep(int X, int Y, int team);
+    void removeChip(int X, int Y);
+
+    std::pair<int,int> mousePositionToXY(Vec2 coordinates);
 };
 
 

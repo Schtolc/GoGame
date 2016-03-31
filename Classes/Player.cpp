@@ -7,21 +7,7 @@
 int Player::playerAmount = 0;
 
 Player::Player() : score(0) {
-    playerNumber = playerAmount;
-    switch (playerNumber) {
-        case 0:
-            chipPath = "white_chip.png";
-            break;
-        case 1:
-            chipPath = "black_chip.png";
-            break;
-        case 2:
-            chipPath = "gray_chip.png";
-            break;
-        case 3:
-            chipPath = "yellow_chip.png";
-            break;
-    }
+    playerTeam = playerAmount;
     playerAmount++;
 }
 
@@ -34,13 +20,13 @@ void Player::setScore(int score) {
     Player::score = score;
 }
 
-int Player::getPlayerNumber() const {
-    return playerNumber;
+int Player::team() const {
+    return playerTeam;
 }
 
 void Player::setPlayerNumber(int num) {
     assert(0 <= num && num < PLAYER_AMOUNT);
-    playerNumber = num;
+    playerTeam = num;
 }
 
 std::string Player::getChipPath() const {

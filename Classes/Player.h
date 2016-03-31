@@ -13,7 +13,7 @@ USING_NS_CC;
 class Player {
 private:
     static int playerAmount;
-    int playerNumber;
+    int playerTeam;
     int score;
     std::string chipPath;
 public:
@@ -23,7 +23,7 @@ public:
 
     void setScore(int score);
 
-    int getPlayerNumber() const;
+    int team() const;
 
     void setPlayerNumber(int num);
 
