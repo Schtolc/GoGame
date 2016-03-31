@@ -63,20 +63,26 @@ bool MainScene::placeChip(int X, int Y) {
     if (board.checkStep(X, Y, currentPlayer->getPlayerNumber())) {
 
         //Добавляем спрайт фишки. Здесь можно поизменять CHIP_SCALE чтобы нормальный размер доски был
-        auto chip = Sprite::create("chip.png");
+        auto chip = Sprite::create(currentPlayer->getChipPath());
         chip->setScale(CHIP_SCALE);
 
         //Здесь надо просчитать координаты фишки которая должна поставиться на доску с координатой (X,Y)
-        Vec2 pos(Vec2(board.getBoardSprite()->getPositionX() +
-                      (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) / 18 * (X - 9),
-                      board.getBoardSprite()->getPositionY() +
-                      (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) / 18 * (9 - Y)));
+
+        //vector = posX + width/32 + (width-width/16)/18*X
+        //X = (vector - posx -width/32)*18/ (width-width/16)
+
+        Vec2 pos(Vec2(board.getBoardSprite()->getContentSize().width / 32 +
+                      ((board.getBoardSprite()->getContentSize().width -
+                        board.getBoardSprite()->getContentSize().width / 16) / 18 * (X)),
+                      board.getBoardSprite()->getContentSize().height / 32 +
+                      ((board.getBoardSprite()->getContentSize().height -
+                        board.getBoardSprite()->getContentSize().height / 16) / 18 * (Y))));
 
         //Параметры фишки
         chip->setPosition(pos);
         chip->setTag(X * 10 + Y);
-        chip->setColor(currentPlayer->getChipColor());
-        this->addChild(chip);
+//        chip->setColor(currentPlayer->getChipColor());
+        board.getBoardSprite()->addChild(chip);
 
         //Взаимодействуем с матрицей доски
         board.boardAt(X, Y) = currentPlayer->getPlayerNumber();
@@ -88,17 +94,20 @@ bool MainScene::placeChip(int X, int Y) {
         //Предупреждение если попытка поставить в недопустимое место
         std::cout << "Warning - Cannot place (" << X << ", " << Y << ", " << currentPlayer->getPlayerNumber() <<
         ") on the board." << std::endl;
-        return false;
+        return true;
     }
 }
 
-void MainScene::removeChip(int X, int Y) {
+bool MainScene::removeChip(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
 
     if (this->getChildByTag(X * 10 + Y)) {
         this->removeChildByTag(X * 10 + Y);
+        board.boardAt(X, Y) = -1;
+        return true;
     } else {
         std::cout << "removing a Chip that do not exist" << std::endl;
+        return false;
     }
 }
 
@@ -106,17 +115,28 @@ void MainScene::removeChip(int X, int Y) {
 bool MainScene::onTouchBegan(Touch *touch, Event *event) {
     int X = 0, Y = 0;
     Vec2 vector = touch->getLocation();
-
     //Здесь очередная магия с координатами - нужно зная координату касания (vector) вычислить позицию на доске
     // (X,Y) ближайшую к ней
-    X = (vector.x - board.getBoardSprite()->getPositionX() -
-         (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) / 18 * 0.5) * 18 /
-        (board.getBoardSprite()->getBoundingBox().size.width - 100 * BOARD_SCALE) + 10;
-    Y = (vector.y - board.getBoardSprite()->getPositionY() -
-         (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) / 18 * 0.5) * 18 /
-        (board.getBoardSprite()->getBoundingBox().size.height - 100 * BOARD_SCALE) - 9;
-    Y = -Y;
-    placeChip(X, Y);
+    //X = (vector - posx -width/32)*18/ (width-width/16)
+
+    X = (vector.x +
+         (board.getBoardSprite()->getContentSize().width - board.getBoardSprite()->getContentSize().width / 16) / 36 *
+         BOARD_SCALE - board.getBoardSprite()->getPositionX() +
+         board.getBoardSprite()->getContentSize().width / 2 * BOARD_SCALE -
+         board.getBoardSprite()->getContentSize().width / 32 * BOARD_SCALE) * 18 /
+        (board.getBoardSprite()->getContentSize().width * BOARD_SCALE -
+         board.getBoardSprite()->getContentSize().width / 16 * BOARD_SCALE);
+
+
+    Y = (vector.y +
+         (board.getBoardSprite()->getContentSize().height - board.getBoardSprite()->getContentSize().height / 16) / 36 *
+         BOARD_SCALE - board.getBoardSprite()->getPositionY() +
+         board.getBoardSprite()->getContentSize().height / 2 * BOARD_SCALE -
+         board.getBoardSprite()->getContentSize().height / 32 * BOARD_SCALE) * 18 /
+        (board.getBoardSprite()->getContentSize().height * BOARD_SCALE -
+         board.getBoardSprite()->getContentSize().height / 16 * BOARD_SCALE);
+
+    assert(placeChip(X, Y));
     return true;
 }
 
@@ -137,7 +157,7 @@ void MainScene::update() {
 void MainScene::GoToGameOver(cocos2d::Ref *sender) {
     std::string str = "";
     for (int i = 0; i < playerAmount; i++) {
-        str += "Player " + std::to_string(i+1)+ " score: " + std::to_string(players[i].getScore()) + "\n";
+        str += "Player " + std::to_string(i + 1) + " score: " + std::to_string(players[i].getScore()) + "\n";
     }
     UserDefault::getInstance()->setStringForKey("PLAYER_SCORE", str);
     UserDefault::getInstance()->flush();

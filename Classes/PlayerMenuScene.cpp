@@ -60,7 +60,7 @@ bool PlayerMenu::init() {
             MenuItemLabel::create(playerTtfs[3], CC_CALLBACK_1(PlayerMenu::GoToGameScene, this, 4))
     };
     for (int i = 0; i < PLAYER_AMOUNT; i++) {
-        playerLabels[i]->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 10 * (6 - i)));
+        playerLabels[i]->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 10 * (5 - i)));
     }
 
     auto menu = Menu::create(playerLabels[0], playerLabels[1], playerLabels[2], playerLabels[3], NULL);

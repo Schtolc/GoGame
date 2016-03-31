@@ -47,12 +47,12 @@ bool MainMenu::init()
     auto newGameLabel = Label::createWithTTF("NewGame", "fonts/go3v2.ttf", 64);
     newGameLabel->setColor(Color3B(61,10,10));
     auto newGameItem = MenuItemLabel::create(newGameLabel, CC_CALLBACK_1( MainMenu::GoToGameScene, this ) );
-    newGameItem->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 10 * 5 ) );
+    newGameItem->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 10 * 3 ) );
 
     auto exitLabel = Label::createWithTTF("Exit", "fonts/go3v2.ttf", 64);
     exitLabel->setColor(Color3B(61,10,10));
     auto exitItem = MenuItemLabel::create(exitLabel, CC_CALLBACK_1( MainMenu::menuCloseCallback, this ) );
-    exitItem->setPosition( Point( visibleSize.width / 2 + origin.x,  visibleSize.height / 10 * 4) );
+    exitItem->setPosition( Point( visibleSize.width / 2 + origin.x,  visibleSize.height / 10 * 2) );
 
     auto menu = Menu::create( newGameItem, exitItem, NULL );
     menu->setPosition( Point::ZERO );

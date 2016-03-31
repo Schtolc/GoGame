@@ -10,16 +10,16 @@ Player::Player() : score(0) {
     playerNumber = playerAmount;
     switch (playerNumber) {
         case 0:
-            chipColor = Color3B::WHITE;
+            chipPath = "white_chip.png";
             break;
         case 1:
-            chipColor = Color3B::BLACK;
+            chipPath = "black_chip.png";
             break;
         case 2:
-            chipColor = Color3B::GRAY;
+            chipPath = "gray_chip.png";
             break;
         case 3:
-            chipColor = Color3B::BLUE;
+            chipPath = "yellow_chip.png";
             break;
     }
     playerAmount++;
@@ -43,8 +43,8 @@ void Player::setPlayerNumber(int num) {
     playerNumber = num;
 }
 
-Color3B Player::getChipColor() const {
-    return chipColor;
+std::string Player::getChipPath() const {
+    return chipPath;
 }
 
 void Player::setPlayerAmount(int amount){

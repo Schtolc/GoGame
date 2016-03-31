@@ -26,7 +26,7 @@ public:
     bool placeChip(int X, int Y);
 
     //Убираем фишку с позиции X,Y
-    void removeChip(int X, int Y);
+    bool removeChip(int X, int Y);
 
     //Обработка событий ошибок
     bool onTouchBegan(Touch *touch, Event *event);

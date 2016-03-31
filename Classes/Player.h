@@ -15,7 +15,7 @@ private:
     static int playerAmount;
     int playerNumber;
     int score;
-    Color3B chipColor;
+    std::string chipPath;
 public:
     Player();
 
@@ -29,7 +29,7 @@ public:
 
     static void setPlayerAmount(int amount);
 
-    Color3B getChipColor() const;
+    std::string getChipPath() const;
 };
 
 

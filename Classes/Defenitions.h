@@ -10,7 +10,7 @@
 //Параметры доски
 #define BOARD_SIZE 19
 #define BOARD_SCALE 0.4f
-#define CHIP_SCALE 0.1f
+#define CHIP_SCALE 0.25f
 #define PLAYER_AMOUNT 4
 
 #define DISPLAY_TIME_SPLASH_SCENE 2
