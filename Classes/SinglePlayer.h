@@ -12,7 +12,7 @@ class SinglePlayer : public Game {
 private:
     int playerTeam;
 
-    SinglePlayer();
+    SinglePlayer() = default;
 
 public:
 
@@ -21,6 +21,8 @@ public:
     ~SinglePlayer() = default;
 
     bool getXY(int X, int Y);
+
+    void AIstep();
 
     void update();
 };

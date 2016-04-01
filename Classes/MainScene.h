@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "LocalMultiPlayer.h"
 #include "GameOverScene.h"
+#include "SinglePlayer.h"
 
 USING_NS_CC;
 

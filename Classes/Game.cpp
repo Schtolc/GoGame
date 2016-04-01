@@ -4,7 +4,7 @@
 
 #include "Game.h"
 
-Game::Game() : board(NULL) { }
+Game::Game() : board(NULL), Locked(false) { }
 
 Game::Game(Board *board) {
     assert(board != NULL);
@@ -21,4 +21,8 @@ bool Game::checkStep(int X, int Y, int team) {
     if (matrix[X][Y] != -1)
         return false;
     return true;
+}
+
+bool Game::isLocked() const {
+    return Locked;
 }

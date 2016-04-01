@@ -19,6 +19,8 @@ private:
 public:
     Board();
 
+    Layer* getLayel() const;
+
     void init(Layer *layer);
 
     void placeChip(int X, int Y, int team);

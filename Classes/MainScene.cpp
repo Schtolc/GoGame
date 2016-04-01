@@ -26,8 +26,8 @@ bool MainScene::init() {
     }
 
     board.init(this);
-    game = new LocalMultiPlayer(&board, 4);
-
+//    game = new LocalMultiPlayer(&board, 4);
+    game = new SinglePlayer(&board);
 
     //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
@@ -43,7 +43,11 @@ bool MainScene::onTouchBegan(Touch *touch, Event *event) {
     std::pair<int, int> XY = board.mousePositionToXY(mousePosition);
     if (0 > XY.first || XY.first > 18 || 0 > XY.second || XY.second > 18) {
         return true;
-    } else {
+    } else if (game->isLocked()) {
+        std::cout << "Locked" << std::endl;
+        return true;
+    }
+    else {
         game->getXY(XY.first, XY.second);
         return true;
     }

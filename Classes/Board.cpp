@@ -26,6 +26,7 @@ void Board::init(Layer *layer) {
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     layer->addChild(backgroundSprite, 0);
 
+
 }
 
 
@@ -97,4 +98,8 @@ std::pair<int, int> Board::mousePositionToXY(Vec2 coordinates) {
              boardSprite->getContentSize().height / 16 * BOARD_SCALE);
 
     return std::pair<int, int>(X, Y);
+}
+
+Layer *Board::getLayel() const {
+    return layer;
 }

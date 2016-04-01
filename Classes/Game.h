@@ -14,6 +14,7 @@ class Game {
 protected:
     int matrix[19][19];
     Board *board;
+    bool Locked;
 public:
 
     Game();
@@ -22,6 +23,11 @@ public:
 
     virtual ~Game() = default;
 
+    bool isLocked() const;
+
+    void setLocked(bool l) {
+        Locked = l;
+    }
     //Проверяем можно ли поставить фишку игрока team на позицию X,Y
     bool checkStep(int X, int Y, int team);
 
