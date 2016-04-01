@@ -4,11 +4,8 @@
 
 #include "Player.h"
 
-int Player::playerAmount = 0;
 
-Player::Player() : score(0) {
-    playerTeam = playerAmount;
-    playerAmount++;
+Player::Player() : score(0), playerTeam(0) {
 }
 
 int Player::getScore() const {
@@ -24,7 +21,7 @@ int Player::team() const {
     return playerTeam;
 }
 
-void Player::setPlayerNumber(int num) {
+void Player::setTeam(int num) {
     assert(0 <= num && num < PLAYER_AMOUNT);
     playerTeam = num;
 }
@@ -33,6 +30,3 @@ std::string Player::getChipPath() const {
     return chipPath;
 }
 
-void Player::setPlayerAmount(int amount){
-    playerAmount = amount;
-}

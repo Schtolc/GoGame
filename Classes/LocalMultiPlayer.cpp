@@ -10,6 +10,9 @@ LocalMultiPlayer::LocalMultiPlayer(Board *board, int playerAmount) : Game(board)
     assert(0 < playerAmount && playerAmount <= 4);
     LocalMultiPlayer::playerAmount = playerAmount;
     players = new Player[playerAmount]();
+    for (int i = 0; i < playerAmount; i++) {
+        players[i].setTeam(i);
+    }
     currentPlayer = players;
 }
 

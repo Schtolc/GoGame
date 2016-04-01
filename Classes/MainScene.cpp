@@ -27,8 +27,12 @@ bool MainScene::init() {
 
     board.init(this);
 //    game = new LocalMultiPlayer(&board, 4);
-    game = new SinglePlayer(&board);
+//    game = new SinglePlayer(&board);
+    game = new OnlineMultiPlayer(&board);
 
+
+//    auto f = CC_CALLBACK_0(MainScene::sync,this);
+//    this->schedule(schedule_selector(MainScene::sync), 2);
     //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
     listener1->onTouchBegan = CC_CALLBACK_2(MainScene::onTouchBegan, this);
@@ -63,4 +67,8 @@ void MainScene::GoToGameOver(cocos2d::Ref *sender) {
     auto scene = GameOver::createScene();
 
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));*/
+}
+
+void MainScene::sync(float dt) {
+    std::cout << dt << std::endl;
 }

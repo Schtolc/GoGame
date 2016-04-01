@@ -6,6 +6,7 @@
 #include "LocalMultiPlayer.h"
 #include "GameOverScene.h"
 #include "SinglePlayer.h"
+#include "OnlineMultiPlayer.h"
 
 USING_NS_CC;
 
@@ -26,6 +27,7 @@ public:
 
     void GoToGameOver(cocos2d::Ref *sender);
 
+    void sync(float dt);
 };
 
 #endif // __MAIN_SCENE_H__

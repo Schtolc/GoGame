@@ -56,7 +56,7 @@ void Board::placeChip(int X, int Y, int team) {
     }
 
     auto chip = Sprite::create(chipPath);
-    chip->setScale(CHIP_SCALE);
+    //chip->setScale(CHIP_SCALE);
 
     //Здесь надо просчитать координаты фишки которая должна поставиться на доску с координатой (X,Y)
     Vec2 pos(Vec2(boardSprite->getContentSize().width / 32 +

@@ -10,7 +10,8 @@
 
 class SinglePlayer : public Game {
 private:
-    int playerTeam;
+    Player player;
+    Player AI;
 
     SinglePlayer() = default;
 

@@ -33,7 +33,7 @@ public:
 
     virtual bool getXY(int X, int Y) = 0;
 
-    virtual void update() = 0;
+    void update() {}
 };
 
 

@@ -4,16 +4,18 @@
 
 #include "SinglePlayer.h"
 
-SinglePlayer::SinglePlayer(Board *board) : Game(board), playerTeam(1) {
+SinglePlayer::SinglePlayer(Board *board) : Game(board) {
     std::srand(time(NULL));
+    player.setTeam(0);
+    AI.setTeam(1);
 }
 
 bool SinglePlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    if (checkStep(X, Y, playerTeam)) {
-        board->placeChip(X, Y, playerTeam);
+    if (checkStep(X, Y, player.team())) {
+        board->placeChip(X, Y, player.team());
         Locked = true;
-        matrix[X][Y] = playerTeam;
+        matrix[X][Y] = player.team();
         update();
         AIstep();
         return true;
@@ -32,12 +34,11 @@ void SinglePlayer::AIstep() {
     do {
         X = std::rand() % 18;
         Y = std::rand() % 18;
-    } while (!checkStep(X, Y, 2));
-    CallFunc* callbk = CallFunc::create(CC_CALLBACK_0(Board::placeChip, board, X, Y, 2));
-    CallFunc* callLocked = CallFunc::create(CC_CALLBACK_0(Game::setLocked, this, false));
+    } while (!checkStep(X, Y, AI.team()));
+    CallFunc* callAIstep = CallFunc::create(CC_CALLBACK_0(Board::placeChip, board, X, Y, AI.team()));
+    CallFunc* callUnlock = CallFunc::create(CC_CALLBACK_0(Game::setLocked, this, false));
 
-    board->getLayel()->runAction(Sequence::create(DelayTime::create(2), callbk, NULL));
-    board->getLayel()->runAction(Sequence::create(DelayTime::create(2), callLocked, NULL));
+    board->getLayel()->runAction(Sequence::create(DelayTime::create(0.5), callAIstep, callUnlock, NULL));
 
     matrix[X][Y] = 2;
     update();
