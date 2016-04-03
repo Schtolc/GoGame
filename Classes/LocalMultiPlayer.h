@@ -22,6 +22,8 @@ public:
 
     //Проверяем можно ли поставить фишку игрока team на позицию X,Y
 
+    bool isLocked();
+
     bool getXY(int X, int Y);
 
     void update();

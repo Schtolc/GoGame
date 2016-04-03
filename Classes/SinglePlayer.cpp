@@ -36,10 +36,14 @@ void SinglePlayer::AIstep() {
         Y = std::rand() % 18;
     } while (!checkStep(X, Y, AI.team()));
     CallFunc* callAIstep = CallFunc::create(CC_CALLBACK_0(Board::placeChip, board, X, Y, AI.team()));
-    CallFunc* callUnlock = CallFunc::create(CC_CALLBACK_0(Game::setLocked, this, false));
+    CallFunc* callUnlock = CallFunc::create(CC_CALLBACK_0(SinglePlayer::setLocked, this, false));
 
     board->getLayel()->runAction(Sequence::create(DelayTime::create(0.5), callAIstep, callUnlock, NULL));
 
     matrix[X][Y] = 2;
     update();
+}
+
+bool SinglePlayer::isLocked() {
+    return Locked;
 }

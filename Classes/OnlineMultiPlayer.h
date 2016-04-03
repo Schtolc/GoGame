@@ -6,10 +6,16 @@
 #define MYGAME_ONLINEMULTIPLAYER_H
 
 #include "Game.h"
+#include "GoGameServer.h"
+#include <chrono>
+#include <thread>
 
-class OnlineMultiPlayer :public Layer, public Game {
+
+class OnlineMultiPlayer : public Game {
 private:
     Player player;
+    GoGameServer GoServer;
+    int token;
     OnlineMultiPlayer() = default;
 public:
     OnlineMultiPlayer(Board *board);
@@ -18,9 +24,11 @@ public:
 
     bool getXY(int X, int Y);
 
+    bool isLocked();
+
     void update();
 
-    void sync(float dt);
+    void sync();
 };
 
 

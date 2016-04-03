@@ -27,7 +27,6 @@ public:
 
     void GoToGameOver(cocos2d::Ref *sender);
 
-    void sync(float dt);
 };
 
 #endif // __MAIN_SCENE_H__

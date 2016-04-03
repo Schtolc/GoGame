@@ -23,6 +23,12 @@ public:
 
     bool getXY(int X, int Y);
 
+    bool isLocked();
+
+    void setLocked(bool l) {
+        Locked = l;
+    }
+
     void AIstep();
 
     void update();

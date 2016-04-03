@@ -6,7 +6,7 @@
 
 Game::Game() : board(NULL), Locked(false) { }
 
-Game::Game(Board *board) {
+Game::Game(Board *board) : Locked(false) {
     assert(board != NULL);
     memset(matrix, -1, sizeof(int) * BOARD_SIZE * BOARD_SIZE);
     Game::board = board;
@@ -23,6 +23,3 @@ bool Game::checkStep(int X, int Y, int team) {
     return true;
 }
 
-bool Game::isLocked() const {
-    return Locked;
-}

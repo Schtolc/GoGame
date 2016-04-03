@@ -41,3 +41,7 @@ void LocalMultiPlayer::update() {
         currentPlayer++;
     }
 }
+
+bool LocalMultiPlayer::isLocked() {
+    return false;
+}

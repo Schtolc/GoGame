@@ -23,11 +23,8 @@ public:
 
     virtual ~Game() = default;
 
-    bool isLocked() const;
+    virtual bool isLocked() = 0;
 
-    void setLocked(bool l) {
-        Locked = l;
-    }
     //Проверяем можно ли поставить фишку игрока team на позицию X,Y
     bool checkStep(int X, int Y, int team);
 

@@ -69,6 +69,3 @@ void MainScene::GoToGameOver(cocos2d::Ref *sender) {
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));*/
 }
 
-void MainScene::sync(float dt) {
-    std::cout << dt << std::endl;
-}
