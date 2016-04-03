@@ -1,3 +1,6 @@
+# Ignore temporary files
+*~
+
 # Ignore thumbnails created by windows
 Thumbs.db
 
