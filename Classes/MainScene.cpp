@@ -26,13 +26,28 @@ bool MainScene::init() {
     }
 
     board.init(this);
-//    game = new LocalMultiPlayer(&board, 4);
-//    game = new SinglePlayer(&board);
-    game = new OnlineMultiPlayer(&board);
 
+    int gameMode = UserDefault::getInstance()->getIntegerForKey("GAME_MODE");
+    switch (gameMode) {
+        case SINGLE_PLAYER:
+            game = new SinglePlayer(&board);
+            break;
+        case ONLINE_MULTI_PLAYER:
+            game = new OnlineMultiPlayer(&board);
+            break;
+        case LOCAL_2_PLAYER:
+            game = new LocalMultiPlayer(&board, 2);
+            break;
+        case LOCAL_3_PLAYER:
+            game = new LocalMultiPlayer(&board, 3);
+            break;
+        case LOCAL_4_PLAYER:
+            game = new LocalMultiPlayer(&board, 4);
+            break;
+        default:
+        std::cout <<"Cant choose game mode" << std::endl;
+    }
 
-//    auto f = CC_CALLBACK_0(MainScene::sync,this);
-//    this->schedule(schedule_selector(MainScene::sync), 2);
     //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
     listener1->onTouchBegan = CC_CALLBACK_2(MainScene::onTouchBegan, this);

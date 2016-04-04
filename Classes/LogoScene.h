@@ -16,7 +16,7 @@ public:
     CREATE_FUNC(LogoScene);
     
 private:
-    void GoToMainMenuScene( float dt );
+    void GoToMenuScene( float dt );
     
 };
 

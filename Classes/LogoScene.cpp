@@ -1,5 +1,5 @@
 #include "LogoScene.h"
-#include "MainMenuScene.h"
+#include "MenuScene.h"
 #include "Defenitions.h"
 
 USING_NS_CC;
@@ -32,7 +32,7 @@ bool LogoScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    this->scheduleOnce( schedule_selector( LogoScene::GoToMainMenuScene ), DISPLAY_TIME_SPLASH_SCENE );
+    this->scheduleOnce( schedule_selector( LogoScene::GoToMenuScene ), DISPLAY_TIME_SPLASH_SCENE );
 
     auto backgroundSprite = Sprite::create( "logo.png" );
     backgroundSprite->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y) );
@@ -42,9 +42,9 @@ bool LogoScene::init()
     return true;
 }
 
-void LogoScene::GoToMainMenuScene( float dt )
+void LogoScene::GoToMenuScene( float dt )
 {
-    auto scene = MainMenu::createScene();
+    auto scene = MenuScene::createScene();
     
     Director::getInstance( )->replaceScene( TransitionFade::create( TRANSITION_TIME, scene ) );
 }

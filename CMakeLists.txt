@@ -125,16 +125,16 @@ set(GAME_SRC
         Classes/AppDelegate.cpp
         Classes/MainScene.cpp
         ${PLATFORM_SPECIFIC_SRC}
-        Classes/Board.cpp Classes/Player.cpp Classes/LogoScene.cpp Classes/MainMenuScene.cpp Classes/PlayerMenuScene.cpp Classes/GameOverScene.cpp Classes/Game.cpp
-        Classes/SinglePlayer.cpp Classes/LocalMultiPlayer.cpp Classes/OnlineMultiPlayer.cpp Classes/GoGameServer.cpp)
+        Classes/Board.cpp Classes/Player.cpp Classes/LogoScene.cpp Classes/GameOverScene.cpp Classes/Game.cpp
+        Classes/SinglePlayer.cpp Classes/LocalMultiPlayer.cpp Classes/OnlineMultiPlayer.cpp Classes/GoGameServer.cpp Classes/MenuScene.cpp)
 
 set(GAME_HEADERS
         Classes/AppDelegate.h
         Classes/MainScene.h
         ${PLATFORM_SPECIFIC_HEADERS}
-        Classes/Board.h Classes/Defenitions.h Classes/Player.h Classes/LogoScene.h Classes/MainMenuScene.h 
-        Classes/PlayerMenuScene.h Classes/GameOverScene.h Classes/Game.h Classes/SinglePlayer.h Classes/LocalMultiPlayer.h
-        Classes/OnlineMultiPlayer.h Classes/GoGameServer.h)
+        Classes/Board.h Classes/Defenitions.h Classes/Player.h Classes/LogoScene.h
+        Classes/GameOverScene.h Classes/Game.h Classes/SinglePlayer.h Classes/LocalMultiPlayer.h
+        Classes/OnlineMultiPlayer.h Classes/GoGameServer.h Classes/MenuScene.h)
 
 if (GAME_HEADERS)
     if (WIN32)
