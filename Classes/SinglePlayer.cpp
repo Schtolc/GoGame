@@ -47,3 +47,8 @@ void SinglePlayer::AIstep() {
 bool SinglePlayer::isLocked() {
     return Locked;
 }
+
+void SinglePlayer::passStep() {
+    Locked = true;
+    AIstep();
+}

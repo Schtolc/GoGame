@@ -27,6 +27,11 @@ public:
 
     void GoToGameOver(cocos2d::Ref *sender);
 
+    void passStep(cocos2d::Ref *sender);
+
+    Label *createMenuLabel(std::string title);
+
+
 };
 
 #endif // __MAIN_SCENE_H__

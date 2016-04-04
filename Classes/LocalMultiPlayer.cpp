@@ -45,3 +45,7 @@ void LocalMultiPlayer::update() {
 bool LocalMultiPlayer::isLocked() {
     return false;
 }
+
+void LocalMultiPlayer::passStep() {
+    update();
+}

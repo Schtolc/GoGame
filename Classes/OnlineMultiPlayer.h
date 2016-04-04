@@ -16,17 +16,20 @@ private:
     Player player;
     GoGameServer GoServer;
     int token;
+    bool onAir;
     OnlineMultiPlayer() = default;
 public:
     OnlineMultiPlayer(Board *board);
 
-    ~OnlineMultiPlayer() = default;
+    ~OnlineMultiPlayer();
 
     bool getXY(int X, int Y);
 
     bool isLocked();
 
     void update();
+
+    void passStep();
 
     void sync();
 };

@@ -26,6 +26,8 @@ public:
 
     bool getXY(int X, int Y);
 
+    void passStep();
+
     void update();
 };
 

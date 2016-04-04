@@ -41,6 +41,7 @@ public:
     void ServerMakeStep(int X, int Y, int team, int token);
     step ServerGetLastStep(int token);
     bool ServerIsPlayerLocked(int token);
+    void ServerPassStep(int token);
 
 };
 #endif //MYGAME_GOGAMESERVER_H

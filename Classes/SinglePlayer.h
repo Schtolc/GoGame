@@ -29,6 +29,8 @@ public:
         Locked = l;
     }
 
+    void passStep();
+
     void AIstep();
 
     void update();

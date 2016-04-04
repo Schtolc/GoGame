@@ -53,6 +53,10 @@ step GoGameServer::ServerGetLastStep(int token) {
     }
 }
 
+void GoGameServer::ServerPassStep(int token) {
+    HTTPGet(string("passstep=") + std::to_string(token));
+}
+
 bool GoGameServer::ServerIsPlayerLocked(int token) {
     string answer = HTTPGet(string("isLocked=" + std::to_string(token)));
     return answer == "Locked";

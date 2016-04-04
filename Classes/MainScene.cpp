@@ -27,6 +27,9 @@ bool MainScene::init() {
 
     board.init(this);
 
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
     int gameMode = UserDefault::getInstance()->getIntegerForKey("GAME_MODE");
     switch (gameMode) {
         case SINGLE_PLAYER:
@@ -45,13 +48,26 @@ bool MainScene::init() {
             game = new LocalMultiPlayer(&board, 4);
             break;
         default:
-        std::cout <<"Cant choose game mode" << std::endl;
+            std::cout << "Cant choose game mode" << std::endl;
     }
 
     //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
     listener1->onTouchBegan = CC_CALLBACK_2(MainScene::onTouchBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
+
+    //Adding menu
+    auto Play = MenuItemLabel::create(createMenuLabel("Pass"), CC_CALLBACK_1(MainScene::passStep, this));
+    Play->setPosition(Point(origin.x + visibleSize.width / 2 - Play->getContentSize().width / 2 - 10,
+                            Play->getContentSize().height / 2));
+    auto Exit = MenuItemLabel::create(createMenuLabel("Surrender"), CC_CALLBACK_1(MainScene::GoToGameOver, this));
+    Exit->setPosition(Point(origin.x + visibleSize.width / 2 + Exit->getContentSize().width / 2 + 10,
+                            Play->getContentSize().height / 2));
+
+    auto menu = Menu::create(Play, Exit, NULL);
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu);
+
 
     return true;
 
@@ -73,14 +89,23 @@ bool MainScene::onTouchBegan(Touch *touch, Event *event) {
 }
 
 void MainScene::GoToGameOver(cocos2d::Ref *sender) {
-    /*std::string str = "";
-    for (int i = 0; i < playerAmount; i++) {
-        str += "Player " + std::to_string(i + 1) + " score: " + std::to_string(players[i].getScore()) + "\n";
-    }
-    UserDefault::getInstance()->setStringForKey("PLAYER_SCORE", str);
-    UserDefault::getInstance()->flush();
-    auto scene = GameOver::createScene();
+    std::string str = "";
 
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));*/
+    UserDefault::getInstance()->setStringForKey("PLAYER_SCORE", str);
+    auto scene = GameOver::createScene();
+    delete game;
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
+Label *MainScene::createMenuLabel(std::string title) {
+    auto menuLabel = Label::createWithTTF(title, "fonts/go3v2.ttf", 32);
+    menuLabel->setColor(Color3B(61, 10, 10));
+    return menuLabel;
+}
+
+void MainScene::passStep(cocos2d::Ref *sender) {
+    if (game->isLocked()) {
+        std::cout << "Locked" << std::endl;
+    }
+    game->passStep();
+}

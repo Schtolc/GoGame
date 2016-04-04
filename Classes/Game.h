@@ -30,6 +30,8 @@ public:
 
     virtual bool getXY(int X, int Y) = 0;
 
+    virtual void passStep() {};
+
     void update() {}
 };
 

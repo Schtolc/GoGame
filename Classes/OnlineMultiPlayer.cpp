@@ -4,7 +4,7 @@
 
 #include "OnlineMultiPlayer.h"
 
-OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board) {
+OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), onAir(true) {
     std::srand(time(NULL));
     token = std::rand() % 2000;
     player.setTeam(GoServer.ServerGetPlayerTeam(token));
@@ -36,7 +36,7 @@ void OnlineMultiPlayer::update() {
 
 void OnlineMultiPlayer::sync() {
 
-    while (true) {
+    while (onAir) {
         std::cout << token << std::endl;
         step newStep = GoServer.ServerGetLastStep(token);
         if (newStep.x != -1) {
@@ -48,3 +48,10 @@ void OnlineMultiPlayer::sync() {
     }
 }
 
+OnlineMultiPlayer::~OnlineMultiPlayer() {
+    onAir = false;
+}
+
+void OnlineMultiPlayer::passStep() {
+    GoServer.ServerPassStep(token);
+}

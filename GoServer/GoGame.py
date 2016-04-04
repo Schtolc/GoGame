@@ -59,6 +59,16 @@ def application (environ, start_response):
             playerDict[player] = False
         else:
             response_body += 'None'
+
+    #?passstep=token
+    elif 'passstep' in q:
+        global lastStep, playerDict
+        player = ''.join(q['passstep'])
+
+        if playerKeys.index(player) == len(playerKeys)-1:
+            currentPlayer = playerKeys[0]
+        else:
+            currentPlayer = playerKeys[playerKeys.index(player)+1]
     
     status = '200 OK'
     response_headers = [
