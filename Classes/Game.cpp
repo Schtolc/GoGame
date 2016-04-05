@@ -4,9 +4,9 @@
 
 #include "Game.h"
 
-Game::Game() : board(NULL), Locked(false) { }
+Game::Game() : board(NULL), Locked(false), gameStatus(GAME_GOING) { }
 
-Game::Game(Board *board) : Locked(false) {
+Game::Game(Board *board) : Locked(false), gameStatus(GAME_GOING) {
     assert(board != NULL);
     memset(matrix, -1, sizeof(int) * BOARD_SIZE * BOARD_SIZE);
     Game::board = board;

@@ -61,3 +61,8 @@ bool GoGameServer::ServerIsPlayerLocked(int token) {
     string answer = HTTPGet(string("isLocked=" + std::to_string(token)));
     return answer == "Locked";
 }
+
+bool GoGameServer::ServerIsReady() {
+    string answer = HTTPGet(string("waiting=p"));
+    return answer == "ready";
+}

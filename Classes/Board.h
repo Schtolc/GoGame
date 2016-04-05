@@ -16,16 +16,25 @@ class Board {
 private:
     Sprite *boardSprite;
     Layer *layer;
+    Label **scores;
 public:
     Board();
 
     Layer* getLayel() const;
 
-    void init(Layer *layer);
+    void displayScore(int score, int team);
+
+    void displayAlert(int status);
+    
+    void removeAlert ();
+
+    void init(Layer *layer, int playerAmount);
 
     void placeChip(int X, int Y, int team);
 
     void removeChip(int X, int Y);
+
+
 
 
     std::pair<int,int> mousePositionToXY(Vec2 coordinates);

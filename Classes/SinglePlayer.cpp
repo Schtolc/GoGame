@@ -26,7 +26,10 @@ bool SinglePlayer::getXY(int X, int Y) {
 }
 
 void SinglePlayer::update() {
-
+    player.setScore(player.getScore()+1);
+    board->displayScore(player.getScore(),player.team());
+    AI.setScore(player.getScore()+2);
+    board->displayScore(player.getScore(),AI.team());
 }
 
 void SinglePlayer::AIstep() {
@@ -40,7 +43,7 @@ void SinglePlayer::AIstep() {
 
     board->getLayel()->runAction(Sequence::create(DelayTime::create(0.5), callAIstep, callUnlock, NULL));
 
-    matrix[X][Y] = 2;
+    matrix[X][Y] = AI.team();
     update();
 }
 

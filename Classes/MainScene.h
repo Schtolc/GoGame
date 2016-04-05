@@ -31,7 +31,6 @@ public:
 
     Label *createMenuLabel(std::string title);
 
-
 };
 
 #endif // __MAIN_SCENE_H__

@@ -1,5 +1,6 @@
 from cgi import parse_qs, escape
 
+playerAmount = 0
 playerKeys = []
 lastStep = ''
 currentPlayer = ''
@@ -10,8 +11,21 @@ def application (environ, start_response):
     response_body = ""
     q = parse_qs(environ['QUERY_STRING'])
     
+    #?newlobby=4
+    if 'newlobby' in q:
+        global playerAmount
+        amount = ''.join(q['newlobby'])
+        playerAmount = int(amount)
+
+    elif 'waiting' in q:
+        global playerAmount, playerKeys
+        if len(playerKeys) == playerAmount:
+            response_body += "ready"
+        else: 
+            response_body += "waiting"
+
     #?isLocked=token
-    if 'isLocked' in q:
+    elif 'isLocked' in q:
         global currentPlayer
         player = ''.join(q['isLocked'])
 
@@ -23,14 +37,18 @@ def application (environ, start_response):
     #?register=token
     elif 'register' in q:
         global playerKeys, playerDict
-        player = ''.join(q['register'])
-
-        if player not in playerKeys:
-             if not playerKeys:
-                 currentPlayer = player
-             playerKeys.append(player)
-             playerDict[player] = False
-        response_body += str(playerKeys.index(player))
+        
+        if (len(playerKeys) == playerAmount):
+            response_body += str(-1)
+        else:
+            player = ''.join(q['register'])
+        
+            if player not in playerKeys:
+                if not playerKeys:
+                    currentPlayer = player
+                playerKeys.append(player)
+                playerDict[player] = False
+            response_body += str(playerKeys.index(player))
 
     #?makestep=x0y0t0ptoken
     elif 'makestep' in q:

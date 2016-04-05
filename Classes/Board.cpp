@@ -6,7 +6,7 @@
 
 Board::Board() { }
 
-void Board::init(Layer *layer) {
+void Board::init(Layer *layer, int playerAmount) {
     assert(layer != NULL);
     Board::layer = layer;
 
@@ -25,6 +25,14 @@ void Board::init(Layer *layer) {
     backgroundSprite->setScaleY(visibleSize.height / backgroundSprite->getContentSize().height);
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     layer->addChild(backgroundSprite, 0);
+
+    scores = new Label*[playerAmount];
+    for (int i =0 ; i < playerAmount; i++) {
+        scores[i] = Label::createWithTTF("p" + std::to_string(i+1) + ": 0", "fonts/go3v2.ttf", 32);
+        scores[i]->setPosition(Point(visibleSize.width / (playerAmount+1) * (i + 1),
+                                     visibleSize.height - scores[i]->getContentSize().height / 2));
+        layer->addChild(scores[i], 1);
+    }
 
 }
 
@@ -103,3 +111,39 @@ Layer *Board::getLayel() const {
     return layer;
 }
 
+void Board::displayScore(int score, int team) {
+    scores[team]->setString("p" + std::to_string(team+1) + ": " + std::to_string(score));
+}
+
+void Board::displayAlert(int status) {
+
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    std::string alert;
+    switch (status) {
+        case SERVER_FULL:
+            alert = "Server is full\n";
+            break;
+        case GAME_OVER:
+            alert = "Game over\n";
+            break;
+        case PLAYER_SURRENDERED:
+            alert = "Player surrendered\n";
+            break;
+        case PLAYER_CONNECTING:
+            alert = "Waiting for other players";
+            break;
+    }
+
+    if (status!=PLAYER_CONNECTING)
+        alert+=std::string("touch to continue");
+
+    auto alertLabel = Label::createWithTTF(alert , "fonts/go3v2.ttf", 72);
+    alertLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+    alertLabel->setTag(ALERT_MESSAGE);
+    layer->addChild(alertLabel,1);
+}
+
+void Board::removeAlert() {
+    layer->removeChildByTag(ALERT_MESSAGE);
+}

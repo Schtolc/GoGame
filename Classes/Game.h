@@ -15,10 +15,14 @@ protected:
     int matrix[19][19];
     Board *board;
     bool Locked;
+    int gameStatus;
 public:
 
     Game();
 
+    int gamestatus() const {
+        return gameStatus;
+    }
     Game(Board *board);
 
     virtual ~Game() = default;
@@ -30,7 +34,7 @@ public:
 
     virtual bool getXY(int X, int Y) = 0;
 
-    virtual void passStep() {};
+    virtual void passStep() = 0 ;
 
     void update() {}
 };

@@ -5,11 +5,19 @@
 #include "OnlineMultiPlayer.h"
 
 OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), onAir(true) {
+    gameStatus = PLAYER_CONNECTING;
     std::srand(time(NULL));
     token = std::rand() % 2000;
-    player.setTeam(GoServer.ServerGetPlayerTeam(token));
-    std::thread t = std::thread(&OnlineMultiPlayer::sync, this);
-    t.detach();
+    int team = GoServer.ServerGetPlayerTeam(token);
+    if (team == -1) {
+        gameStatus = SERVER_FULL;
+        this->Game::board->displayAlert(SERVER_FULL);
+    } else {
+        this->Game::board->displayAlert(PLAYER_CONNECTING);
+        player.setTeam(team);
+        std::thread t = std::thread(&OnlineMultiPlayer::sync, this);
+        t.detach();
+    }
 }
 
 bool OnlineMultiPlayer::getXY(int X, int Y) {
@@ -36,11 +44,22 @@ void OnlineMultiPlayer::update() {
 
 void OnlineMultiPlayer::sync() {
 
+    while (true) {
+        if (GoServer.ServerIsReady()) {
+            gameStatus = GAME_GOING;
+            break;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    }
+
+    board->removeAlert();
+
     while (onAir) {
         std::cout << token << std::endl;
         step newStep = GoServer.ServerGetLastStep(token);
         if (newStep.x != -1) {
-            Director::getInstance()->getScheduler()->performFunctionInCocosThread(CC_CALLBACK_0(Board::placeChip, board, newStep.x, newStep.y, newStep.team));
+            Director::getInstance()->getScheduler()->performFunctionInCocosThread(
+                    CC_CALLBACK_0(Board::placeChip, board, newStep.x, newStep.y, newStep.team));
             matrix[newStep.x][newStep.y] = newStep.team;
             update();
         }

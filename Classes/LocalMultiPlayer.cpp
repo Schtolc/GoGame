@@ -35,6 +35,10 @@ bool LocalMultiPlayer::getXY(int X, int Y) {
 
 void LocalMultiPlayer::update() {
     //Добавить логику
+
+
+
+
     if (currentPlayer->team() == playerAmount - 1) {
         currentPlayer = players;
     } else {
