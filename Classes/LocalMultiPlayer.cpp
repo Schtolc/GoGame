@@ -53,3 +53,11 @@ bool LocalMultiPlayer::isLocked() {
 void LocalMultiPlayer::passStep() {
     update();
 }
+
+std::string LocalMultiPlayer::getScore() {
+    std::string score = "";
+    for (int i = 0; i < playerAmount; i++) {
+        score += std::string("p") + std::to_string(i) + std::string(": ") + std::to_string(players[i].getScore()) + std::string("\n");
+    }
+    return score;
+}

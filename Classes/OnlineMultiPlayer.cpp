@@ -74,3 +74,7 @@ OnlineMultiPlayer::~OnlineMultiPlayer() {
 void OnlineMultiPlayer::passStep() {
     GoServer.ServerPassStep(token);
 }
+
+std::string OnlineMultiPlayer::getScore() {
+    return "p" + std::to_string(player.team()) + ": " + std::to_string(player.getScore());
+}

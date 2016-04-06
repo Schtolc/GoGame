@@ -55,3 +55,8 @@ void SinglePlayer::passStep() {
     Locked = true;
     AIstep();
 }
+
+std::string SinglePlayer::getScore() {
+    return "p1: " + std::to_string(player.getScore()) + "\np2: " + std::to_string(AI.getScore());
+}
+

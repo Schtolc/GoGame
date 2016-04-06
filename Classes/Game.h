@@ -36,6 +36,8 @@ public:
 
     virtual void passStep() = 0 ;
 
+    virtual std::string getScore() = 0;
+
     void update() {}
 };
 

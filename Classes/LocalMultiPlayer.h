@@ -28,6 +28,8 @@ public:
 
     void passStep();
 
+    std::string getScore();
+
     void update();
 };
 

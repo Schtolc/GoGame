@@ -98,8 +98,7 @@ bool MainScene::onTouchBegan(Touch *touch, Event *event) {
 }
 
 void MainScene::GoToGameOver(cocos2d::Ref *sender) {
-    std::string str = "";
-
+    std::string str = game->getScore();
     UserDefault::getInstance()->setStringForKey("PLAYER_SCORE", str);
     auto scene = GameOver::createScene();
     delete game;

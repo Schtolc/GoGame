@@ -29,6 +29,8 @@ public:
         Locked = l;
     }
 
+    std::string getScore();
+
     void passStep();
 
     void AIstep();

@@ -29,6 +29,8 @@ public:
 
     void update();
 
+    std::string getScore();
+
     void passStep();
 
     void sync();
