@@ -13,14 +13,16 @@ private:
     int playerAmount;
     Player *currentPlayer;
     Player *players;
-    LocalMultiPlayer();
+    LocalMultiPlayer() = default;
+
+    void nextPlayer();
 public:
 
     LocalMultiPlayer(Board *board, int playerAmount);
 
     ~LocalMultiPlayer();
 
-    //Проверяем можно ли поставить фишку игрока team на позицию X,Y
+    void update();
 
     bool isLocked();
 
@@ -30,7 +32,7 @@ public:
 
     std::string getScore();
 
-    void update();
+
 };
 
 #endif //MYGAME_LOCALMULTIPLAYER_H

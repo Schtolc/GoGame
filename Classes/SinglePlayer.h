@@ -15,27 +15,25 @@ private:
 
     SinglePlayer() = default;
 
+    void AIstep();
+
+    void Unlock();
+
 public:
 
     SinglePlayer(Board *board);
 
     ~SinglePlayer() = default;
 
-    bool getXY(int X, int Y);
+    void update();
 
     bool isLocked();
 
-    void setLocked(bool l) {
-        Locked = l;
-    }
-
-    std::string getScore();
+    bool getXY(int X, int Y);
 
     void passStep();
 
-    void AIstep();
-
-    void update();
+    std::string getScore();
 };
 
 

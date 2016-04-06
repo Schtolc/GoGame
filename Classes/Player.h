@@ -26,7 +26,6 @@ public:
 
     void setTeam(int num);
 
-
     std::string getChipPath() const;
 };
 

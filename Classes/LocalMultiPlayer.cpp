@@ -4,8 +4,6 @@
 
 #include "LocalMultiPlayer.h"
 
-LocalMultiPlayer::LocalMultiPlayer() : playerAmount(0), players(NULL), currentPlayer(NULL) { }
-
 LocalMultiPlayer::LocalMultiPlayer(Board *board, int playerAmount) : Game(board) {
     assert(0 < playerAmount && playerAmount <= 4);
     LocalMultiPlayer::playerAmount = playerAmount;
@@ -26,6 +24,7 @@ bool LocalMultiPlayer::getXY(int X, int Y) {
         board->placeChip(X, Y, currentPlayer->team());
         matrix[X][Y] = currentPlayer->team();
         update();
+        nextPlayer();
         return true;
     } else {
         std::cout << "Warning cant place a chip (" << X << "," << Y << "," << currentPlayer->team() << ")" << std::endl;
@@ -34,16 +33,8 @@ bool LocalMultiPlayer::getXY(int X, int Y) {
 }
 
 void LocalMultiPlayer::update() {
-    //Добавить логику
+    //Добавить логику. изменить счет, вывести алерт, изменить статус игры
 
-
-
-
-    if (currentPlayer->team() == playerAmount - 1) {
-        currentPlayer = players;
-    } else {
-        currentPlayer++;
-    }
 }
 
 bool LocalMultiPlayer::isLocked() {
@@ -51,13 +42,21 @@ bool LocalMultiPlayer::isLocked() {
 }
 
 void LocalMultiPlayer::passStep() {
-    update();
+    nextPlayer();
 }
 
 std::string LocalMultiPlayer::getScore() {
     std::string score = "";
     for (int i = 0; i < playerAmount; i++) {
-        score += std::string("p") + std::to_string(i) + std::string(": ") + std::to_string(players[i].getScore()) + std::string("\n");
+        score += "p" + std::to_string(i) + ": " + std::to_string(players[i].getScore()) + "\n";
     }
     return score;
+}
+
+void LocalMultiPlayer::nextPlayer() {
+    if (currentPlayer->team() == playerAmount - 1) {
+        currentPlayer = players;
+    } else {
+        currentPlayer++;
+    }
 }

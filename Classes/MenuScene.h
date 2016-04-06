@@ -8,6 +8,7 @@
 #include "cocos2d.h"
 #include "MainScene.h"
 #include "Defenitions.h"
+#include <functional>
 
 USING_NS_CC;
 
@@ -22,24 +23,24 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(MenuScene);
 
-    cocos2d::Menu* MainMenu;
+private:
+    Menu *menu;
     Size visibleSize;
     Vec2 origin;
 
-private:
+    void showMainMenu(Ref *sender);
+
+    void showLocalMultiplayerMenu(Ref *sender);
+
+    void showGameModesMenu(Ref *sender);
+
+    void gameExit(Ref *sender) const;
+
+    void GoToGameScene(Ref *sender, const int gameMode);
 
     Label *createMenuLabel(std::string title);
 
-    void showPlayMenu(cocos2d::Ref *sender);
-
-    void showPlayersAmountMenu(cocos2d::Ref *sender);
-
-    void showGameModesMenu(cocos2d::Ref *sender);
-
-    void menuClose(cocos2d::Ref *sender);
-
-    void GoToGameScene(cocos2d::Ref *sender, const int gameMode);
-
+    void placeMenuLabel(MenuItemLabel* menuLabel, const int Y);
 };
 
 

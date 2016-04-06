@@ -17,27 +17,33 @@ private:
     Sprite *boardSprite;
     Layer *layer;
     Label **scores;
-public:
-    Board();
+    Menu *menu;
+    Size visibleSize;
+    Vec2 origin;
 
-    Layer* getLayel() const;
+
+    Board() = default;
+
+public:
+    Board(Layer *layer, int playerAmount);
+
+    Layer *getLayel() const;
 
     void displayScore(int score, int team);
 
     void displayAlert(int status);
-    
-    void removeAlert ();
 
-    void init(Layer *layer, int playerAmount);
+    void removeAlert();
 
     void placeChip(int X, int Y, int team);
 
     void removeChip(int X, int Y);
 
+    Label *createMenuLabel(std::string title);
 
+    void placeMenuLabel(MenuItemLabel *menuLabel, const int X);
 
-
-    std::pair<int,int> mousePositionToXY(Vec2 coordinates);
+    std::pair<int, int> mousePositionToXY(Vec2 coordinates);
 };
 
 

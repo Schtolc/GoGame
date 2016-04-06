@@ -17,23 +17,26 @@ private:
     GoGameServer GoServer;
     int token;
     bool onAir;
+
     OnlineMultiPlayer() = default;
+
+    void sync();
+
 public:
     OnlineMultiPlayer(Board *board);
 
     ~OnlineMultiPlayer();
 
-    bool getXY(int X, int Y);
+    void update();
 
     bool isLocked();
 
-    void update();
-
-    std::string getScore();
+    bool getXY(int X, int Y);
 
     void passStep();
 
-    void sync();
+    std::string getScore();
+
 };
 
 

@@ -39,6 +39,7 @@ bool OnlineMultiPlayer::isLocked() {
 }
 
 void OnlineMultiPlayer::update() {
+    //Добавить логику. изменить счет, вывести алерт, изменить статус игры
 
 }
 

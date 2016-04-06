@@ -4,14 +4,12 @@
 
 #include "Board.h"
 
-Board::Board() { }
-
-void Board::init(Layer *layer, int playerAmount) {
-    assert(layer != NULL);
+Board::Board(Layer *layer, int playerAmount) {
+    assert(layer != NULL && 2<=playerAmount && playerAmount<=4);
     Board::layer = layer;
 
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    visibleSize = Director::getInstance()->getVisibleSize();
+    origin = Director::getInstance()->getVisibleOrigin();
 
     //Adding board sprite
     boardSprite = Sprite::create("board.png");
@@ -26,6 +24,7 @@ void Board::init(Layer *layer, int playerAmount) {
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     layer->addChild(backgroundSprite, 0);
 
+    //Adding scores
     scores = new Label*[playerAmount];
     for (int i =0 ; i < playerAmount; i++) {
         scores[i] = Label::createWithTTF("p" + std::to_string(i+1) + ": 0", "fonts/go3v2.ttf", 32);
@@ -33,6 +32,11 @@ void Board::init(Layer *layer, int playerAmount) {
                                      visibleSize.height - scores[i]->getContentSize().height / 2));
         layer->addChild(scores[i], 1);
     }
+
+    //Adding menu
+    menu = Menu::create();
+    menu->setPosition(Point::ZERO);
+    layer->addChild(menu);
 
 }
 
@@ -63,7 +67,6 @@ void Board::placeChip(int X, int Y, int team) {
     }
 
     auto chip = Sprite::create(chipPath);
-    //chip->setScale(CHIP_SCALE);
 
     //Здесь надо просчитать координаты фишки которая должна поставиться на доску с координатой (X,Y)
     Vec2 pos(Vec2(boardSprite->getContentSize().width / 32 +
@@ -112,13 +115,12 @@ Layer *Board::getLayel() const {
 }
 
 void Board::displayScore(int score, int team) {
+    assert(0<=team && team <=3);
     scores[team]->setString("p" + std::to_string(team+1) + ": " + std::to_string(score));
 }
 
 void Board::displayAlert(int status) {
-
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    assert(GAME_OVER <= status && status <=PLAYER_CONNECTING);
     std::string alert;
     switch (status) {
         case SERVER_FULL:
@@ -146,4 +148,21 @@ void Board::displayAlert(int status) {
 
 void Board::removeAlert() {
     layer->removeChildByTag(ALERT_MESSAGE);
+}
+
+Label *Board::createMenuLabel(std::string title) {
+    assert(title != "");
+    auto menuLabel = Label::createWithTTF(title, "fonts/go3v2.ttf", 32);
+    menuLabel->setColor(Color3B(61, 10, 10));
+    return menuLabel;
+}
+
+
+void Board::placeMenuLabel(MenuItemLabel *menuLabel, const int X) {
+    assert(1 <= X && X <= 2 && menuLabel!= nullptr);
+
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    menuLabel->setPosition(Point(origin.x + visibleSize.width / 3 * X - menuLabel->getContentSize().width / 2,
+                            origin.y + menuLabel->getContentSize().height / 2));
+    menu->addChild(menuLabel);
 }

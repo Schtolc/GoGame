@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Board.h"
 #include "LocalMultiPlayer.h"
+#include "Game.h"
 #include "GameOverScene.h"
 #include "SinglePlayer.h"
 #include "OnlineMultiPlayer.h"
@@ -13,13 +14,12 @@ USING_NS_CC;
 class MainScene : public cocos2d::Layer {
 private:
     Game *game;
-    Board board;
+    Board *board;
 public:
     static cocos2d::Scene *createScene();
 
     virtual bool init();
 
-    // implement the "static create()" method manually
     CREATE_FUNC(MainScene);
 
     //Обработка событий мышки
@@ -27,10 +27,7 @@ public:
 
     void GoToGameOver(cocos2d::Ref *sender);
 
-    void passStep(cocos2d::Ref *sender);
-
-    Label *createMenuLabel(std::string title);
-
+    void passStep(Ref *sender);
 };
 
 #endif // __MAIN_SCENE_H__

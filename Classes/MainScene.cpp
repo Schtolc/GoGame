@@ -1,5 +1,4 @@
 #include "MainScene.h"
-#include "string"
 
 USING_NS_CC;
 
@@ -25,33 +24,30 @@ bool MainScene::init() {
         return false;
     }
 
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
+    //Resolving game mode
     int gameMode = UserDefault::getInstance()->getIntegerForKey("GAME_MODE");
+    assert(SINGLE_PLAYER <= gameMode && gameMode <= LOCAL_4_PLAYER);
     switch (gameMode) {
         case SINGLE_PLAYER:
-            board.init(this, 2);
-            game = new SinglePlayer(&board);
+            board = new Board(this, 2);
+            game = new SinglePlayer(board);
             break;
         case ONLINE_MULTI_PLAYER:
-            board.init(this, 4);
-            game = new OnlineMultiPlayer(&board);
+            board = new Board(this, 4);
+            game = new OnlineMultiPlayer(board);
             break;
         case LOCAL_2_PLAYER:
-            board.init(this, 2);
-            game = new LocalMultiPlayer(&board, 2);
+            board = new Board(this, 2);
+            game = new LocalMultiPlayer(board, 2);
             break;
         case LOCAL_3_PLAYER:
-            board.init(this, 3);
-            game = new LocalMultiPlayer(&board, 3);
+            board = new Board(this, 3);
+            game = new LocalMultiPlayer(board, 3);
             break;
         case LOCAL_4_PLAYER:
-            board.init(this, 4);
-            game = new LocalMultiPlayer(&board, 4);
+            board = new Board(this, 4);
+            game = new LocalMultiPlayer(board, 4);
             break;
-        default:
-            std::cout << "Cant choose game mode" << std::endl;
     }
 
     //Adding mouse events
@@ -60,37 +56,40 @@ bool MainScene::init() {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
 
     //Adding menu
-    auto Play = MenuItemLabel::create(createMenuLabel("Pass"), CC_CALLBACK_1(MainScene::passStep, this));
-    Play->setPosition(Point(visibleSize.width / 3 * 1 - Play->getContentSize().width / 2 - 10,
-                            Play->getContentSize().height / 2));
-    auto Exit = MenuItemLabel::create(createMenuLabel("Surrender"), CC_CALLBACK_1(MainScene::GoToGameOver, this));
-    Exit->setPosition(Point(visibleSize.width / 3 * 2 + Exit->getContentSize().width / 2 + 10,
-                            Play->getContentSize().height / 2));
-
-    auto menu = Menu::create(Play, Exit, NULL);
-    menu->setPosition(Point::ZERO);
-    this->addChild(menu);
+    auto Play = MenuItemLabel::create(board->createMenuLabel("Pass"), CC_CALLBACK_1(MainScene::passStep, this));
+    auto Exit = MenuItemLabel::create(board->createMenuLabel("Surrender"),
+                                      CC_CALLBACK_1(MainScene::GoToGameOver, this));
+    board->placeMenuLabel(Play, 1);
+    board->placeMenuLabel(Exit, 2);
 
     return true;
 
 }
 
 bool MainScene::onTouchBegan(Touch *touch, Event *event) {
-    Vec2 mousePosition = touch->getLocation();
-    std::pair<int, int> XY = board.mousePositionToXY(mousePosition);
+        //Идет подключение к серверу - касания не работают
     if (game->gamestatus() == PLAYER_CONNECTING) {
         return true;
     }
-    else if (game->gamestatus()!=GAME_GOING){
+        //Конец игры
+    else if (game->gamestatus() != GAME_GOING) {
         GoToGameOver(this);
         return true;
     }
-    else if (0 > XY.first || XY.first > 18 || 0 > XY.second || XY.second > 18) {
-        return true;
-    } else if (game->isLocked()) {
+        //Игрок не может ходить
+    else if (game->isLocked()) {
         std::cout << "Locked" << std::endl;
         return true;
     }
+
+        //Вычисляем по координатам касания X и Y доски
+    std::pair<int, int> XY = board->mousePositionToXY(touch->getLocation());
+
+        //Игрок нажал не на поле
+    if (0 > XY.first || XY.first > 18 || 0 > XY.second || XY.second > 18) {
+        return true;
+    }
+        //Передаем координаты модели игры
     else {
         game->getXY(XY.first, XY.second);
         return true;
@@ -100,20 +99,13 @@ bool MainScene::onTouchBegan(Touch *touch, Event *event) {
 void MainScene::GoToGameOver(cocos2d::Ref *sender) {
     std::string str = game->getScore();
     UserDefault::getInstance()->setStringForKey("PLAYER_SCORE", str);
+
     auto scene = GameOver::createScene();
     delete game;
+    delete board;
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
-Label *MainScene::createMenuLabel(std::string title) {
-    auto menuLabel = Label::createWithTTF(title, "fonts/go3v2.ttf", 32);
-    menuLabel->setColor(Color3B(61, 10, 10));
-    return menuLabel;
-}
-
-void MainScene::passStep(cocos2d::Ref *sender) {
-    if (game->isLocked()) {
-        std::cout << "Locked" << std::endl;
-    }
+void MainScene::passStep(Ref *sender) {
     game->passStep();
 }
