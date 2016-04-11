@@ -4,10 +4,11 @@
 
 #include "OnlineMultiPlayer.h"
 
-OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), onAir(true) {
+OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), onAir(true), GoServer(
+        boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 8090)) {
     gameStatus = PLAYER_CONNECTING;
     std::srand(time(NULL));
-    token = std::rand() % 2000;
+    token = std::rand() % 1000;
     int team = GoServer.ServerGetPlayerTeam(token);
     if (team == -1) {
         gameStatus = SERVER_FULL;
@@ -57,7 +58,7 @@ void OnlineMultiPlayer::sync() {
 
     while (onAir) {
         std::cout << token << std::endl;
-        step newStep = GoServer.ServerGetLastStep(token);
+        Step newStep = GoServer.ServerGetLastStep(token);
         if (newStep.x != -1) {
             Director::getInstance()->getScheduler()->performFunctionInCocosThread(
                     CC_CALLBACK_0(Board::placeChip, board, newStep.x, newStep.y, newStep.team));

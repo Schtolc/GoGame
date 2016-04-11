@@ -5,44 +5,61 @@
 #ifndef MYGAME_GOGAMESERVER_H
 #define MYGAME_GOGAMESERVER_H
 
-#include <string>
-#include <string.h>
-#include <curl/curl.h>
+#include <boost/asio.hpp>
+#include <iostream>
+#include <array>
 
-using std::string;
+#define BUFFER_SIZE 6
+#define WAITING 0
+#define SEVERREADY 1
+#define SERVERFULL 2
+#define GAMEOVER 3
 
-struct step {
+#define IS_WAITING 10
+#define IS_LOCKED 11
+#define REGISTER 12
+#define MAKESTEP 13
+#define GETSTEP 14
+#define PASSSTEP 15
+
+struct Step {
     int x;
     int y;
     int team;
 
-    step() : x(0), y(0), team(0) { }
+    Step() : x(0), y(0), team(0) { }
 
-    step(int X, int Y, int T) : x(X), y(Y), team(T) { }
+    Step(int X, int Y, int T) : x(X), y(Y), team(T) { }
 
-    bool operator==(const step& other) const {
-        return (x == other.x && y==other.y && team==other.team);
+    bool operator==(const Step &other) const {
+        return (x == other.x && y == other.y && team == other.team);
     }
 };
 
 class GoGameServer {
 private:
-    CURL *curl;
-    CURLcode res;
+    boost::asio::io_service io_service;
+    boost::asio::ip::tcp::endpoint ep;
 
-    static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp);
+    std::array<int, BUFFER_SIZE> make_request(std::array<int, BUFFER_SIZE> &msg);
 
-    string HTTPGet(string url);
-
-public:
     GoGameServer() = default;
 
+public:
+    GoGameServer(boost::asio::ip::tcp::endpoint);
+
     int ServerGetPlayerTeam(int token);
+
     void ServerMakeStep(int X, int Y, int team, int token);
-    step ServerGetLastStep(int token);
+
+    Step ServerGetLastStep(int token);
+
     bool ServerIsPlayerLocked(int token);
+
     void ServerPassStep(int token);
+
     bool ServerIsReady();
 
 };
+
 #endif //MYGAME_GOGAMESERVER_H

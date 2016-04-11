@@ -39,6 +39,9 @@ set(BUILD_LUA_LIBS OFF CACHE BOOL "turn off build lua related targets")
 set(BUILD_JS_LIBS OFF CACHE BOOL "turn off build js related targets")
 add_subdirectory(${COCOS2D_ROOT})
 
+find_package(Boost 1.60.0 COMPONENTS system REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+
 # Some macro definitions
 if (WINDOWS)
     if (BUILD_SHARED_LIBS)
@@ -150,7 +153,7 @@ else ()
     endif (WIN32)
 endif ()
 
-target_link_libraries(${APP_NAME} cocos2d)
+target_link_libraries(${APP_NAME} cocos2d ${Boost_LIBRARIES} pthread)
 
 set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
 
