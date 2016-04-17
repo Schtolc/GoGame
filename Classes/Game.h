@@ -26,6 +26,8 @@ public:
 
     int gamestatus() const;
 
+    virtual void performGameOver() {}
+
     //Проверяем можно ли поставить фишку игрока team на позицию X,Y
     bool checkStep(int X, int Y, int team);
 

@@ -27,6 +27,8 @@ public:
 
     void GoToGameOver(cocos2d::Ref *sender);
 
+    void surrender(Ref *sender);
+
     void passStep(Ref *sender);
 };
 

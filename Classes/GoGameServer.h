@@ -5,22 +5,11 @@
 #ifndef MYGAME_GOGAMESERVER_H
 #define MYGAME_GOGAMESERVER_H
 
+#include "Defenitions.h"
 #include <boost/asio.hpp>
 #include <iostream>
 #include <array>
 
-#define BUFFER_SIZE 6
-#define WAITING 0
-#define SEVERREADY 1
-#define SERVERFULL 2
-#define GAMEOVER 3
-
-#define IS_WAITING 10
-#define IS_LOCKED 11
-#define REGISTER 12
-#define MAKESTEP 13
-#define GETSTEP 14
-#define PASSSTEP 15
 
 struct Step {
     int x;
@@ -38,27 +27,39 @@ struct Step {
 
 class GoGameServer {
 private:
+    static const int FlagServerState = 10;
+    static const int FlagPlayerLocked = 11;
+    static const int FlagRegistration = 12;
+    static const int FlagMakeStep = 13;
+    static const int FlagGetStep = 14;
+    static const int FlagPassStep = 15;
+    static const int FLagGameOver = 16;
+
+
     boost::asio::io_service io_service;
     boost::asio::ip::tcp::endpoint ep;
 
-    std::array<int, BUFFER_SIZE> make_request(std::array<int, BUFFER_SIZE> &msg);
+    std::array<int, IO_BUFFER> make_request(std::array<int, IO_BUFFER> &msg);
 
     GoGameServer() = default;
+
 
 public:
     GoGameServer(boost::asio::ip::tcp::endpoint);
 
     int ServerGetPlayerTeam(int token);
 
-    void ServerMakeStep(int X, int Y, int team, int token);
+    bool ServerMakeStep(int X, int Y, int team, int token);
 
     Step ServerGetLastStep(int token);
 
     bool ServerIsPlayerLocked(int token);
 
-    void ServerPassStep(int token);
+    bool ServerPassStep(int token);
 
-    bool ServerIsReady();
+    bool ServerPassGameOver();
+
+    int ServerState();
 
 };
 

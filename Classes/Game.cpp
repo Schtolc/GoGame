@@ -25,4 +25,3 @@ bool Game::checkStep(int X, int Y, int team) {
         return false;
     return true;
 }
-

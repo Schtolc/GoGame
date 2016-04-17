@@ -58,7 +58,7 @@ bool MainScene::init() {
     //Adding menu
     auto Play = MenuItemLabel::create(board->createMenuLabel("Pass"), CC_CALLBACK_1(MainScene::passStep, this));
     auto Exit = MenuItemLabel::create(board->createMenuLabel("Surrender"),
-                                      CC_CALLBACK_1(MainScene::GoToGameOver, this));
+                                      CC_CALLBACK_1(MainScene::surrender, this));
     board->placeMenuLabel(Play, 1);
     board->placeMenuLabel(Exit, 2);
 
@@ -67,12 +67,12 @@ bool MainScene::init() {
 }
 
 bool MainScene::onTouchBegan(Touch *touch, Event *event) {
-        //Идет подключение к серверу - касания не работают
+    //Идет подключение к серверу - касания не работают
     if (game->gamestatus() == PLAYER_CONNECTING) {
         return true;
     }
         //Конец игры
-    else if (game->gamestatus() != GAME_GOING) {
+    else if (game->gamestatus() == GAME_OVER || game->gamestatus() == PLAYER_SURRENDERED) {
         GoToGameOver(this);
         return true;
     }
@@ -82,10 +82,10 @@ bool MainScene::onTouchBegan(Touch *touch, Event *event) {
         return true;
     }
 
-        //Вычисляем по координатам касания X и Y доски
+    //Вычисляем по координатам касания X и Y доски
     std::pair<int, int> XY = board->mousePositionToXY(touch->getLocation());
 
-        //Игрок нажал не на поле
+    //Игрок нажал не на поле
     if (0 > XY.first || XY.first > 18 || 0 > XY.second || XY.second > 18) {
         return true;
     }
@@ -96,11 +96,19 @@ bool MainScene::onTouchBegan(Touch *touch, Event *event) {
     }
 }
 
+void MainScene::surrender(Ref *sender) {
+    game->performGameOver();
+    board->displayAlert(GAME_OVER);
+}
+
+
 void MainScene::GoToGameOver(cocos2d::Ref *sender) {
+
     std::string str = game->getScore();
     UserDefault::getInstance()->setStringForKey("PLAYER_SCORE", str);
 
     auto scene = GameOver::createScene();
+    board->removeAlert();
     delete game;
     delete board;
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));

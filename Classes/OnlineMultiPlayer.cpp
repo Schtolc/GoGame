@@ -4,12 +4,16 @@
 
 #include "OnlineMultiPlayer.h"
 
-OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), onAir(true), GoServer(
+OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), GoServer(
         boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 8090)) {
+
     gameStatus = PLAYER_CONNECTING;
     std::srand(time(NULL));
     token = std::rand() % 1000;
+
     int team = GoServer.ServerGetPlayerTeam(token);
+    assert(-1 <= team && team <= PLAYER_AMOUNT - 1);
+
     if (team == -1) {
         gameStatus = SERVER_FULL;
         this->Game::board->displayAlert(SERVER_FULL);
@@ -25,7 +29,7 @@ bool OnlineMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
     if (checkStep(X, Y, player.team())) {
         board->placeChip(X, Y, player.team());
-        GoServer.ServerMakeStep(X, Y, player.team(), token);
+        assert(GoServer.ServerMakeStep(X, Y, player.team(), token));
         matrix[X][Y] = player.team();
         update();
         return true;
@@ -46,17 +50,13 @@ void OnlineMultiPlayer::update() {
 
 void OnlineMultiPlayer::sync() {
 
-    while (true) {
-        if (GoServer.ServerIsReady()) {
-            gameStatus = GAME_GOING;
-            break;
-        }
+    while (GoServer.ServerState() == PLAYER_CONNECTING) {
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     }
-
+    gameStatus = GAME_GOING;
     board->removeAlert();
 
-    while (onAir) {
+    while (GoServer.ServerState() != GAME_OVER) {
         std::cout << token << std::endl;
         Step newStep = GoServer.ServerGetLastStep(token);
         if (newStep.x != -1) {
@@ -65,16 +65,26 @@ void OnlineMultiPlayer::sync() {
             matrix[newStep.x][newStep.y] = newStep.team;
             update();
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+
+    std::cout<< "im here" << std::endl;
+
+    if (gameStatus!=PLAYER_SURRENDERED) {
+        gameStatus = PLAYER_SURRENDERED;
+        Director::getInstance()->getScheduler()->performFunctionInCocosThread(
+                CC_CALLBACK_0(Board::displayAlert, board, PLAYER_SURRENDERED));
+    }
+
 }
 
-OnlineMultiPlayer::~OnlineMultiPlayer() {
-    onAir = false;
+void OnlineMultiPlayer::performGameOver() {
+    gameStatus = PLAYER_SURRENDERED;
+    assert(GoServer.ServerPassGameOver());
 }
 
 void OnlineMultiPlayer::passStep() {
-    GoServer.ServerPassStep(token);
+    assert(GoServer.ServerPassStep(token));
 }
 
 std::string OnlineMultiPlayer::getScore() {

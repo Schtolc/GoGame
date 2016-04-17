@@ -16,7 +16,6 @@ private:
     Player player;
     GoGameServer GoServer;
     int token;
-    bool onAir;
 
     OnlineMultiPlayer() = default;
 
@@ -25,7 +24,7 @@ private:
 public:
     OnlineMultiPlayer(Board *board);
 
-    ~OnlineMultiPlayer();
+    ~OnlineMultiPlayer() = default;
 
     void update();
 
@@ -34,6 +33,8 @@ public:
     bool getXY(int X, int Y);
 
     void passStep();
+
+    void performGameOver();
 
     std::string getScore();
 
