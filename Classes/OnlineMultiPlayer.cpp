@@ -11,7 +11,9 @@ OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), GoServer(
     std::srand(time(NULL));
     token = std::rand() % 1000;
 
-    int team = GoServer.ServerGetPlayerTeam(token);
+    std::pair<int,int> TeamLobby = GoServer.ServerGetPlayerTeam(token);
+    int team = TeamLobby.first;
+    GoServer.setLobbyId(TeamLobby.second);
     assert(-1 <= team && team <= PLAYER_AMOUNT - 1);
 
     if (team == -1) {

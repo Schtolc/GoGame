@@ -6,16 +6,18 @@
 #include <iostream>
 
 GoGameServer::GoGameServer(boost::asio::ip::tcp::endpoint endpoint)
-        : io_service(), ep(endpoint) {
+        : io_service(), ep(endpoint),lobby_id(0) {
 }
 
 
-int GoGameServer::ServerGetPlayerTeam(int token) {
+std::pair<int,int> GoGameServer::ServerGetPlayerTeam(int token) {
     assert(0 <= token && token <= 1000);
     std::array<int, IO_BUFFER> request = std::array<int, IO_BUFFER>();
     request[0] = FlagRegistration;
     request[1] = token;
-    return make_request(request)[0];
+    std::array<int, IO_BUFFER> response = make_request(request);
+    std::pair<int,int> result(response[0],response[1]);
+    return result;
 }
 
 bool GoGameServer::ServerMakeStep(int X, int Y, int team, int token) {
@@ -75,8 +77,13 @@ bool GoGameServer::ServerPassGameOver() {
 std::array<int, IO_BUFFER> GoGameServer::make_request(std::array<int, IO_BUFFER> &msg) {
     boost::asio::ip::tcp::socket sock(io_service);
     sock.connect(ep);
+    msg[IO_BUFFER-1] = lobby_id;
     sock.write_some(boost::asio::buffer(msg));
     std::array<int, 6> buf;
     sock.read_some(boost::asio::buffer(buf));
     return buf;
+}
+
+void GoGameServer::setLobbyId(int id) {
+    lobby_id = id;
 }

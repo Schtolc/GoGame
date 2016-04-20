@@ -38,6 +38,7 @@ private:
 
     boost::asio::io_service io_service;
     boost::asio::ip::tcp::endpoint ep;
+    int lobby_id;
 
     std::array<int, IO_BUFFER> make_request(std::array<int, IO_BUFFER> &msg);
 
@@ -47,7 +48,9 @@ private:
 public:
     GoGameServer(boost::asio::ip::tcp::endpoint);
 
-    int ServerGetPlayerTeam(int token);
+    void setLobbyId(int id);
+
+    std::pair<int,int> ServerGetPlayerTeam(int token);
 
     bool ServerMakeStep(int X, int Y, int team, int token);
 
