@@ -1,7 +1,5 @@
 #include "MainScene.h"
 
-USING_NS_CC;
-
 
 Scene *MainScene::createScene() {
 
@@ -27,40 +25,14 @@ bool MainScene::init() {
     //Resolving game mode
     int gameMode = UserDefault::getInstance()->getIntegerForKey("GAME_MODE");
     assert(SINGLE_PLAYER <= gameMode && gameMode <= LOCAL_4_PLAYER);
-    switch (gameMode) {
-        case SINGLE_PLAYER:
-            board = new Board(this, 2);
-            game = new SinglePlayer(board);
-            break;
-        case ONLINE_MULTI_PLAYER:
-            board = new Board(this, 4);
-            game = new OnlineMultiPlayer(board);
-            break;
-        case LOCAL_2_PLAYER:
-            board = new Board(this, 2);
-            game = new LocalMultiPlayer(board, 2);
-            break;
-        case LOCAL_3_PLAYER:
-            board = new Board(this, 3);
-            game = new LocalMultiPlayer(board, 3);
-            break;
-        case LOCAL_4_PLAYER:
-            board = new Board(this, 4);
-            game = new LocalMultiPlayer(board, 4);
-            break;
-    }
+
+    board = GameFactory::makeBoard(this, gameMode);
+    game = GameFactory::makeGame(board, gameMode);
 
     //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
     listener1->onTouchBegan = CC_CALLBACK_2(MainScene::onTouchBegan, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
-
-    //Adding menu
-    auto Play = MenuItemLabel::create(board->createMenuLabel("Pass"), CC_CALLBACK_1(MainScene::passStep, this));
-    auto Exit = MenuItemLabel::create(board->createMenuLabel("Surrender"),
-                                      CC_CALLBACK_1(MainScene::surrender, this));
-    board->placeMenuLabel(Play, 1);
-    board->placeMenuLabel(Exit, 2);
 
     return true;
 

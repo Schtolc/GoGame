@@ -5,8 +5,10 @@
 #ifndef MENU_SCENE_H
 #define MENU_SCENE_H
 
+
 #include "cocos2d.h"
 #include "MainScene.h"
+#include "Board.h"
 #include "Defenitions.h"
 #include <functional>
 

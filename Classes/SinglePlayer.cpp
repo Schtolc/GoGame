@@ -41,7 +41,7 @@ void SinglePlayer::AIstep() {
     //Бот ходит с задержкой
     CallFunc *callAIstep = CallFunc::create(CC_CALLBACK_0(Board::placeChip, board, X, Y, AI.team()));
     CallFunc *callUnlock = CallFunc::create(CC_CALLBACK_0(SinglePlayer::Unlock, this));
-    board->getLayel()->runAction(Sequence::create(DelayTime::create(0.5), callAIstep, callUnlock, NULL));
+    board->getLayer()->runAction(Sequence::create(DelayTime::create(0.5), callAIstep, callUnlock, NULL));
 
     matrix[X][Y] = AI.team();
     update();

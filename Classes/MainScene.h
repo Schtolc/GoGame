@@ -2,14 +2,15 @@
 #define __MAIN_SCENE_H__
 
 #include "cocos2d.h"
-#include "Board.h"
-#include "LocalMultiPlayer.h"
+
 #include "Game.h"
 #include "GameOverScene.h"
-#include "SinglePlayer.h"
-#include "OnlineMultiPlayer.h"
+#include "GameModeFactory.h"
+
 
 USING_NS_CC;
+
+
 
 class MainScene : public cocos2d::Layer {
 private:

@@ -28,6 +28,7 @@
 #define PLAYER_SURRENDERED 3
 #define PLAYER_CONNECTING 4
 
+
 #define ALERT_MESSAGE 404
 
 #define IO_BUFFER 6

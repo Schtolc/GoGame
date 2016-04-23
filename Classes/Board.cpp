@@ -4,42 +4,22 @@
 
 #include "Board.h"
 
-Board::Board(Layer *layer, int playerAmount) {
-    assert(layer != NULL && 2<=playerAmount && playerAmount<=4);
+Board::Board(Layer *layer, int playerAmount) : boardSprite(NULL), scores(NULL) {
+    assert(layer != NULL && 2 <= playerAmount && playerAmount <= 4);
+
     Board::layer = layer;
 
-    visibleSize = Director::getInstance()->getVisibleSize();
-    origin = Director::getInstance()->getVisibleOrigin();
-
-    //Adding board sprite
-    boardSprite = Sprite::create("board.png");
-    boardSprite->setScale(BOARD_SCALE);
-    boardSprite->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-    layer->addChild(boardSprite, 1);
-
-    //Adding background
-    auto backgroundSprite = Sprite::create("background.jpg");
-    backgroundSprite->setScaleX(visibleSize.width / backgroundSprite->getContentSize().width);
-    backgroundSprite->setScaleY(visibleSize.height / backgroundSprite->getContentSize().height);
-    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    layer->addChild(backgroundSprite, 0);
-
-    //Adding scores
-    scores = new Label*[playerAmount];
-    for (int i =0 ; i < playerAmount; i++) {
-        scores[i] = Label::createWithTTF("p" + std::to_string(i+1) + ": 0", "fonts/go3v2.ttf", 32);
-        scores[i]->setPosition(Point(visibleSize.width / (playerAmount+1) * (i + 1),
-                                     visibleSize.height - scores[i]->getContentSize().height / 2));
-        layer->addChild(scores[i], 1);
-    }
-
-    //Adding menu
-    menu = Menu::create();
-    menu->setPosition(Point::ZERO);
-    layer->addChild(menu);
-
+    ViewBuilder builder(layer, playerAmount);
+    createView(builder);
 }
 
+void Board::createView(ViewBuilder &builder) {
+
+    builder.buildBoard(boardSprite);
+    builder.buildBackGround();
+    builder.buildScores(scores);
+    builder.buildUI();
+}
 
 void Board::placeChip(int X, int Y, int team) {
 
@@ -110,17 +90,21 @@ std::pair<int, int> Board::mousePositionToXY(Vec2 coordinates) {
     return std::pair<int, int>(X, Y);
 }
 
-Layer *Board::getLayel() const {
+Layer *Board::getLayer() const {
     return layer;
 }
 
 void Board::displayScore(int score, int team) {
-    assert(0<=team && team <=3);
-    scores[team]->setString("p" + std::to_string(team+1) + ": " + std::to_string(score));
+    assert(0 <= team && team <= 3);
+    scores[team]->setString("p" + std::to_string(team + 1) + ": " + std::to_string(score));
 }
 
 void Board::displayAlert(int status) {
-    assert(GAME_OVER <= status && status <=PLAYER_CONNECTING);
+    assert(GAME_OVER <= status && status <= PLAYER_CONNECTING);
+
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
     std::string alert;
     switch (status) {
         case SERVER_FULL:
@@ -137,32 +121,17 @@ void Board::displayAlert(int status) {
             break;
     }
 
-    if (status!=PLAYER_CONNECTING)
-        alert+=std::string("touch to continue");
+    if (status != PLAYER_CONNECTING)
+        alert += std::string("touch to continue");
 
-    auto alertLabel = Label::createWithTTF(alert , "fonts/go3v2.ttf", 72);
+    auto alertLabel = Label::createWithTTF(alert, "fonts/go3v2.ttf", 72);
     alertLabel->setPosition(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
     alertLabel->setTag(ALERT_MESSAGE);
-    layer->addChild(alertLabel,1);
+    layer->addChild(alertLabel, 1);
 }
 
 void Board::removeAlert() {
     layer->removeChildByTag(ALERT_MESSAGE);
 }
 
-Label *Board::createMenuLabel(std::string title) {
-    assert(title != "");
-    auto menuLabel = Label::createWithTTF(title, "fonts/go3v2.ttf", 32);
-    menuLabel->setColor(Color3B(61, 10, 10));
-    return menuLabel;
-}
 
-
-void Board::placeMenuLabel(MenuItemLabel *menuLabel, const int X) {
-    assert(1 <= X && X <= 2 && menuLabel!= nullptr);
-
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    menuLabel->setPosition(Point(origin.x + visibleSize.width / 3 * X - menuLabel->getContentSize().width / 2,
-                            origin.y + menuLabel->getContentSize().height / 2));
-    menu->addChild(menuLabel);
-}
