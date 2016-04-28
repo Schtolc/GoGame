@@ -3,8 +3,9 @@
 //
 
 #include "OnlineMultiPlayer.h"
+#include "MainScene.h"
 
-OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), GoServer(
+OnlineMultiPlayer::OnlineMultiPlayer(MainScene *s) : Game(s), GoServer(
         boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), 8090)) {
 
     gameStatus = PLAYER_CONNECTING;
@@ -18,9 +19,9 @@ OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), GoServer(
 
     if (team == -1) {
         gameStatus = SERVER_FULL;
-        this->Game::board->displayAlert(SERVER_FULL);
+        scene->displayAlert(SERVER_FULL);
     } else {
-        this->Game::board->displayAlert(PLAYER_CONNECTING);
+        scene->displayAlert(PLAYER_CONNECTING);
         player.setTeam(team);
         std::thread t = std::thread(&OnlineMultiPlayer::sync, this);
         t.detach();
@@ -30,7 +31,7 @@ OnlineMultiPlayer::OnlineMultiPlayer(Board *board) : Game(board), GoServer(
 bool OnlineMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
     if (checkStep(X, Y, player.team())) {
-        board->placeChip(X, Y, player.team());
+        scene->placeChip(X, Y, player.team());
         assert(GoServer.ServerMakeStep(X, Y, player.team(), token));
         matrix[X][Y] = player.team();
         update();
@@ -56,14 +57,14 @@ void OnlineMultiPlayer::sync() {
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     }
     gameStatus = GAME_GOING;
-    board->removeAlert();
+    scene->removeAlert();
 
     while (GoServer.ServerState() != GAME_OVER) {
         std::cout << token << std::endl;
         Step newStep = GoServer.ServerGetLastStep(token);
         if (newStep.x != -1) {
             Director::getInstance()->getScheduler()->performFunctionInCocosThread(
-                    CC_CALLBACK_0(Board::placeChip, board, newStep.x, newStep.y, newStep.team));
+                    CC_CALLBACK_0(MainScene::placeChip, scene, newStep.x, newStep.y, newStep.team));
             matrix[newStep.x][newStep.y] = newStep.team;
             update();
         }
@@ -75,7 +76,7 @@ void OnlineMultiPlayer::sync() {
     if (gameStatus!=PLAYER_SURRENDERED) {
         gameStatus = PLAYER_SURRENDERED;
         Director::getInstance()->getScheduler()->performFunctionInCocosThread(
-                CC_CALLBACK_0(Board::displayAlert, board, PLAYER_SURRENDERED));
+                CC_CALLBACK_0(MainScene::displayAlert, scene, PLAYER_SURRENDERED));
     }
 
 }

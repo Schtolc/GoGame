@@ -15,7 +15,7 @@
 class GameFactory {
 public:
     static Board* makeBoard(Layer* layer, int gameMode);
-    static Game* makeGame(Board* board, int gameMode);
+    static Game* makeGame(MainScene* layer, int gameMode);
 };
 
 

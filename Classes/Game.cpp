@@ -4,10 +4,10 @@
 
 #include "Game.h"
 
-Game::Game(Board *board) : Locked(false), gameStatus(GAME_GOING) {
-    assert(board != NULL);
+Game::Game(MainScene *s) : Locked(false), gameStatus(GAME_GOING) {
+    assert(s != NULL);
     memset(matrix, -1, sizeof(int) * BOARD_SIZE * BOARD_SIZE);
-    Game::board = board;
+    scene = s;
 }
 
 int Game::gamestatus() const {

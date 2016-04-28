@@ -22,7 +22,7 @@ private:
     void sync();
 
 public:
-    OnlineMultiPlayer(Board *board);
+    OnlineMultiPlayer(MainScene *s);
 
     ~OnlineMultiPlayer() = default;
 

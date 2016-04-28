@@ -3,8 +3,9 @@
 //
 
 #include "LocalMultiPlayer.h"
+#include "MainScene.h"
 
-LocalMultiPlayer::LocalMultiPlayer(Board *board, int playerAmount) : Game(board) {
+LocalMultiPlayer::LocalMultiPlayer(MainScene *s, int playerAmount) : Game(s) {
     assert(0 < playerAmount && playerAmount <= 4);
     LocalMultiPlayer::playerAmount = playerAmount;
     players = new Player[playerAmount]();
@@ -21,7 +22,7 @@ LocalMultiPlayer::~LocalMultiPlayer() {
 bool LocalMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
     if (checkStep(X, Y, currentPlayer->team())) {
-        board->placeChip(X, Y, currentPlayer->team());
+        scene->placeChip(X, Y, currentPlayer->team());
         matrix[X][Y] = currentPlayer->team();
         update();
         nextPlayer();

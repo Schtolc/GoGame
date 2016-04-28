@@ -18,7 +18,7 @@ private:
     void nextPlayer();
 public:
 
-    LocalMultiPlayer(Board *board, int playerAmount);
+    LocalMultiPlayer(MainScene *s, int playerAmount);
 
     ~LocalMultiPlayer();
 

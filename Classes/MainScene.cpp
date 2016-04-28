@@ -27,7 +27,7 @@ bool MainScene::init() {
     assert(SINGLE_PLAYER <= gameMode && gameMode <= LOCAL_4_PLAYER);
 
     board = GameFactory::makeBoard(this, gameMode);
-    game = GameFactory::makeGame(board, gameMode);
+    game = GameFactory::makeGame(this, gameMode);
 
     //Adding mouse events
     auto listener1 = EventListenerTouchOneByOne::create();
@@ -88,4 +88,21 @@ void MainScene::GoToGameOver(cocos2d::Ref *sender) {
 
 void MainScene::passStep(Ref *sender) {
     game->passStep();
+}
+
+void MainScene::placeChip(int X, int Y, int team) {
+    board->placeChip(X, Y, team);
+}
+
+void MainScene::removeChip(int X, int Y) {
+    board->removeChip(X, Y);
+
+}
+
+void MainScene::displayAlert(int status) {
+    board->displayAlert(status);
+}
+
+void MainScene::removeAlert() {
+    board->removeAlert();
 }

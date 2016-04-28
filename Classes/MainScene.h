@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 
 #include "Game.h"
+#include "Board.h"
 #include "GameOverScene.h"
 #include "GameModeFactory.h"
 
@@ -31,6 +32,15 @@ public:
     void surrender(Ref *sender);
 
     void passStep(Ref *sender);
+
+    void placeChip(int X, int Y, int team);
+
+    void removeChip(int X, int Y);
+
+    void displayAlert(int status);
+
+    void removeAlert();
+
 };
 
 #endif // __MAIN_SCENE_H__

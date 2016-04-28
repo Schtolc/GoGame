@@ -21,7 +21,7 @@ private:
 
 public:
 
-    SinglePlayer(Board *board);
+    SinglePlayer(MainScene *layer);
 
     ~SinglePlayer() = default;
 

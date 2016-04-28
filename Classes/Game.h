@@ -5,8 +5,10 @@
 #ifndef MYGAME_GAME_H
 #define MYGAME_GAME_H
 
-#include "Board.h"
+
+class MainScene;
 #include "Player.h"
+#include <iostream>
 
 USING_NS_CC;
 
@@ -16,11 +18,12 @@ private:
 
 protected:
     int matrix[19][19];
-    Board *board;
+//    Board *board;
+    MainScene* scene;
     bool Locked;
     int gameStatus;
 public:
-    Game(Board *board);
+    Game(MainScene *s);
 
     virtual ~Game() = default;
 

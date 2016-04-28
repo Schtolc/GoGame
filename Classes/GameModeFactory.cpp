@@ -17,20 +17,22 @@ Board *GameFactory::makeBoard(Layer *layer, int gameMode) {
         case LOCAL_4_PLAYER:
             return new Board(layer, 4);
     }
+    return NULL;
 }
 
-Game *GameFactory::makeGame(Board *board, int gameMode) {
+Game *GameFactory::makeGame(MainScene *layer, int gameMode) {
     switch (gameMode) {
         case SINGLE_PLAYER:
-            return new SinglePlayer(board);
+            return new SinglePlayer(layer);
         case ONLINE_MULTI_PLAYER:
-            return new OnlineMultiPlayer(board);
+            return new OnlineMultiPlayer(layer);
         case LOCAL_2_PLAYER:
-            return new LocalMultiPlayer(board, 2);
+            return new LocalMultiPlayer(layer, 2);
         case LOCAL_3_PLAYER:
-            return new LocalMultiPlayer(board, 3);
+            return new LocalMultiPlayer(layer, 3);
         case LOCAL_4_PLAYER:
-            return new LocalMultiPlayer(board, 4);
+            return new LocalMultiPlayer(layer, 4);
     }
+    return NULL;
 }
 
