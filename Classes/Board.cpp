@@ -90,14 +90,12 @@ std::pair<int, int> Board::mousePositionToXY(Vec2 coordinates) {
     return std::pair<int, int>(X, Y);
 }
 
-Layer *Board::getLayer() const {
-    return layer;
-}
 
 void Board::displayScore(int score, int team) {
     assert(0 <= team && team <= 3);
     scores[team]->setString("p" + std::to_string(team + 1) + ": " + std::to_string(score));
 }
+
 
 void Board::displayAlert(int status) {
     assert(GAME_OVER <= status && status <= PLAYER_CONNECTING);

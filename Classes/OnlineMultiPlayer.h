@@ -34,7 +34,7 @@ public:
 
     void passStep();
 
-    void performGameOver();
+    void doSurrender();
 
     std::string getScore();
 

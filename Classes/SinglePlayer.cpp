@@ -48,11 +48,8 @@ void SinglePlayer::AIstep() {
     update();
 }
 
-bool SinglePlayer::isLocked() {
-    return Locked;
-}
 
-void SinglePlayer::passStep() {
+void SinglePlayer::passStep( ) {
     if (isLocked()) {
         std::cout << "Locked" << std::endl;
         return;

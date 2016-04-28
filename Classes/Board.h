@@ -30,8 +30,6 @@ public:
 
     Board(Layer *layer, int playerAmount);
 
-    Layer *getLayer() const;
-
     void createView(ViewBuilder& builder);
 
     void displayScore(int score, int team);

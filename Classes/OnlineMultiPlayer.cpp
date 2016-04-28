@@ -81,7 +81,7 @@ void OnlineMultiPlayer::sync() {
 
 }
 
-void OnlineMultiPlayer::performGameOver() {
+void OnlineMultiPlayer::doSurrender() {
     gameStatus = PLAYER_SURRENDERED;
     assert(GoServer.ServerPassGameOver());
 }

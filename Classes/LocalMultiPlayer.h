@@ -24,8 +24,6 @@ public:
 
     void update();
 
-    bool isLocked();
-
     bool getXY(int X, int Y);
 
     void passStep();

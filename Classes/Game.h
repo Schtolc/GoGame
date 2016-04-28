@@ -17,8 +17,8 @@ private:
     Game() = default;
 
 protected:
+    //Класс логики
     int matrix[19][19];
-//    Board *board;
     MainScene* scene;
     bool Locked;
     int gameStatus;
@@ -27,19 +27,17 @@ public:
 
     virtual ~Game() = default;
 
-    int gamestatus() const;
 
-    virtual void performGameOver() {
-        gameStatus = GAME_OVER;
-    }
+    //Template method
+    void surrender();
+    virtual void doSurrender() { }
 
-    //Проверяем можно ли поставить фишку игрока team на позицию X,Y
+    virtual bool isLocked();
+
+    //Инкапсулируем в логику
     bool checkStep(int X, int Y, int team);
 
     void update() { }
-
-    //Проверяем может ли игрок ходить
-    virtual bool isLocked() = 0;
 
     //Получаем X и Y доски и совершаем ход
     virtual bool getXY(int X, int Y) = 0;
@@ -49,6 +47,9 @@ public:
 
     //Отдаем счет игроков
     virtual std::string getScore() = 0;
+
+    //Обработка событий мышки
+    bool onTouchBegan(Touch *touch, Event *event);
 
 };
 

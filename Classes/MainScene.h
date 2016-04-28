@@ -24,22 +24,21 @@ public:
 
     CREATE_FUNC(MainScene);
 
-    //Обработка событий мышки
-    bool onTouchBegan(Touch *touch, Event *event);
-
-    void GoToGameOver(cocos2d::Ref *sender);
-
-    void surrender(Ref *sender);
-
-    void passStep(Ref *sender);
-
     void placeChip(int X, int Y, int team);
+
+    std::pair<int, int> mousePositionToXY(Vec2 coordinates);
 
     void removeChip(int X, int Y);
 
     void displayAlert(int status);
 
     void removeAlert();
+
+    void surrender(Ref *sender);
+
+    void passStep(Ref *sender);
+
+    void GoToGameOver(Ref *sender);
 
 };
 
