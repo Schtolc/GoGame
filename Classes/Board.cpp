@@ -25,11 +25,11 @@ void Board::placeChip(int X, int Y, int team) {
 
     //Проверяем ошибки входных данных
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    assert (team >= 0 && team <= 4);
+    assert (team >= FIRST_PLAYER && team <= FIRST_PLAYER + 4);
 
     //Добавляем спрайт фишки. Здесь можно поизменять CHIP_SCALE чтобы нормальный размер доски был
     std::string chipPath;
-    switch (team) {
+    switch (team - FIRST_PLAYER) {
         case 0:
             chipPath = "white_chip.png";
             break;
@@ -92,8 +92,8 @@ std::pair<int, int> Board::mousePositionToXY(Vec2 coordinates) {
 
 
 void Board::displayScore(int score, int team) {
-    assert(0 <= team && team <= 3);
-    scores[team]->setString("p" + std::to_string(team + 1) + ": " + std::to_string(score));
+    assert(FIRST_PLAYER <= team && team < 4 + FIRST_PLAYER);
+    scores[team]->setString("p" + std::to_string(team + 1 - FIRST_PLAYER) + ": " + std::to_string(score));
 }
 
 

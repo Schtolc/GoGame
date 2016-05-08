@@ -5,10 +5,12 @@
 #ifndef MYGAME_GAME_H
 #define MYGAME_GAME_H
 
-
 class MainScene;
 #include "Player.h"
 #include <iostream>
+#include "GameLogic.h"
+
+
 
 USING_NS_CC;
 
@@ -17,8 +19,7 @@ private:
     Game() = default;
 
 protected:
-    //Класс логики
-    int matrix[19][19];
+    GameLogic* logic;
     MainScene* scene;
     bool Locked;
     int gameStatus;
@@ -33,9 +34,6 @@ public:
     virtual void doSurrender() { }
 
     virtual bool isLocked();
-
-    //Инкапсулируем в логику
-    bool checkStep(int X, int Y, int team);
 
     void update() { }
 

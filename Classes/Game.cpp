@@ -4,24 +4,14 @@
 
 #include "Game.h"
 #include "MainScene.h"
+#include "SimpleGameLogic.h"
 
 Game::Game(MainScene *s) : Locked(false), gameStatus(GAME_GOING) {
     assert(s != NULL);
-    memset(matrix, -1, sizeof(int) * BOARD_SIZE * BOARD_SIZE);
+   //!!!!
+    logic = new SimpleGameLogic();
     scene = s;
 }
-
-bool Game::checkStep(int X, int Y, int team) {
-    assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18 && team >= 0);
-
-    //Добавить логику проверяющую можно ли поставить фишку
-    //т.е не занято ли поле или допустим ли ход
-
-    if (matrix[X][Y] != -1)
-        return false;
-    return true;
-}
-
 
 bool Game::onTouchBegan(Touch *touch, Event *event) {
     //Идет подключение к серверу - касания не работают

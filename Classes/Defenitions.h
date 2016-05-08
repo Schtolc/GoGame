@@ -28,6 +28,8 @@
 #define PLAYER_SURRENDERED 3
 #define PLAYER_CONNECTING 4
 
+#define EMPTY_CELL 0
+#define FIRST_PLAYER 1
 
 #define ALERT_MESSAGE 404
 

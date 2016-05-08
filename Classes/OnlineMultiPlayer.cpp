@@ -22,7 +22,7 @@ OnlineMultiPlayer::OnlineMultiPlayer(MainScene *s) : Game(s), GoServer(
         scene->displayAlert(SERVER_FULL);
     } else {
         scene->displayAlert(PLAYER_CONNECTING);
-        player.setTeam(team);
+        player.setTeam(team+FIRST_PLAYER);
         std::thread t = std::thread(&OnlineMultiPlayer::sync, this);
         t.detach();
     }
@@ -30,10 +30,11 @@ OnlineMultiPlayer::OnlineMultiPlayer(MainScene *s) : Game(s), GoServer(
 
 bool OnlineMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    if (checkStep(X, Y, player.team())) {
+    if (logic->checkStep(X, Y, player.team())) {
         scene->placeChip(X, Y, player.team());
-        assert(GoServer.ServerMakeStep(X, Y, player.team(), token));
-        matrix[X][Y] = player.team();
+        assert(GoServer.ServerMakeStep(X, Y, player.team()-FIRST_PLAYER, token));
+        logic->setChip(X,Y,player.team());
+    // matrix[X][Y] = player.team()
         update();
         return true;
     } else {
@@ -64,8 +65,9 @@ void OnlineMultiPlayer::sync() {
         Step newStep = GoServer.ServerGetLastStep(token);
         if (newStep.x != -1) {
             Director::getInstance()->getScheduler()->performFunctionInCocosThread(
-                    CC_CALLBACK_0(MainScene::placeChip, scene, newStep.x, newStep.y, newStep.team));
-            matrix[newStep.x][newStep.y] = newStep.team;
+                    CC_CALLBACK_0(MainScene::placeChip, scene, newStep.x, newStep.y, newStep.team+FIRST_PLAYER));
+            logic->setChip(newStep.x, newStep.y, newStep.team+FIRST_PLAYER);
+//  matrix[newStep.x][newStep.y] = newStep.team;
             update();
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
@@ -91,5 +93,5 @@ void OnlineMultiPlayer::passStep() {
 }
 
 std::string OnlineMultiPlayer::getScore() {
-    return "p" + std::to_string(player.team()) + ": " + std::to_string(player.getScore());
+    return "p" + std::to_string(player.team()+FIRST_PLAYER) + ": " + std::to_string(player.getScore());
 }

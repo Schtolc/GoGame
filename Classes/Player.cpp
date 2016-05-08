@@ -21,7 +21,7 @@ int Player::team() const {
 }
 
 void Player::setTeam(int num) {
-    assert(0 <= num && num < PLAYER_AMOUNT);
+    assert(FIRST_PLAYER <= num && num < PLAYER_AMOUNT+FIRST_PLAYER);
     playerTeam = num;
 }
 

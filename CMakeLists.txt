@@ -130,7 +130,8 @@ set(GAME_SRC
         ${PLATFORM_SPECIFIC_SRC}
         Classes/Board.cpp Classes/Player.cpp Classes/LogoScene.cpp Classes/GameOverScene.cpp Classes/Game.cpp
         Classes/SinglePlayer.cpp Classes/LocalMultiPlayer.cpp Classes/OnlineMultiPlayer.cpp Classes/GoGameServer.cpp
-        Classes/MenuScene.cpp Classes/GameModeFactory.cpp Classes/ViewBuilder.cpp)
+        Classes/MenuScene.cpp Classes/GameModeFactory.cpp Classes/ViewBuilder.cpp
+        Classes/SimpleGameLogic.cpp)
 
 set(GAME_HEADERS
         Classes/AppDelegate.h
@@ -139,7 +140,7 @@ set(GAME_HEADERS
         Classes/Board.h Classes/Defenitions.h Classes/Player.h Classes/LogoScene.h
         Classes/GameOverScene.h Classes/Game.h Classes/SinglePlayer.h Classes/LocalMultiPlayer.h
         Classes/OnlineMultiPlayer.h Classes/GoGameServer.h Classes/MenuScene.h
-        Classes/GameModeFactory.h Classes/ViewBuilder.h)
+        Classes/GameModeFactory.h Classes/ViewBuilder.h Classes/GameLogic.h Classes/SimpleGameLogic.h)
 
 if (GAME_HEADERS)
     if (WIN32)

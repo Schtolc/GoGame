@@ -10,7 +10,7 @@ LocalMultiPlayer::LocalMultiPlayer(MainScene *s, int playerAmount) : Game(s) {
     LocalMultiPlayer::playerAmount = playerAmount;
     players = new Player[playerAmount]();
     for (int i = 0; i < playerAmount; i++) {
-        players[i].setTeam(i);
+        players[i].setTeam(i+FIRST_PLAYER);
     }
     currentPlayer = players;
 }
@@ -21,9 +21,9 @@ LocalMultiPlayer::~LocalMultiPlayer() {
 
 bool LocalMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    if (checkStep(X, Y, currentPlayer->team())) {
+    if (logic->checkStep(X, Y, currentPlayer->team())) {
         scene->placeChip(X, Y, currentPlayer->team());
-        matrix[X][Y] = currentPlayer->team();
+        logic->setChip(X,Y,currentPlayer->team());
         update();
         nextPlayer();
         return true;
@@ -51,7 +51,7 @@ std::string LocalMultiPlayer::getScore() {
 }
 
 void LocalMultiPlayer::nextPlayer() {
-    if (currentPlayer->team() == playerAmount - 1) {
+    if (currentPlayer->team() == FIRST_PLAYER + playerAmount - 1) {
         currentPlayer = players;
     } else {
         currentPlayer++;
