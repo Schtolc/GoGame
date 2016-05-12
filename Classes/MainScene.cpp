@@ -78,3 +78,6 @@ void MainScene::GoToGameOver(cocos2d::Ref *sender) {
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
+bool MainScene::chipExist(int X, int Y) {
+    return board->chipExist(X,Y);
+}

@@ -36,8 +36,8 @@ bool MenuScene::init() {
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(backgroundSprite);
 
-    //GoGame title initialization
-    auto title = Label::createWithTTF("GoGame", "fonts/go3v2.ttf", 128);
+    //GoGameLogic title initialization
+    auto title = Label::createWithTTF("GoGameLogic", "fonts/go3v2.ttf", 128);
     title->setPosition(
             Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - title->getContentSize().height));
     this->addChild(title, 1);

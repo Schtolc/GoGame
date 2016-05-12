@@ -65,7 +65,15 @@ void Board::placeChip(int X, int Y, int team) {
 
 void Board::removeChip(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    layer->removeChildByTag(X * 10 + Y);
+    boardSprite->removeChildByTag(X * 10 + Y);
+}
+
+bool Board::chipExist(int X, int Y) {
+    assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
+    if (boardSprite->getChildByTag(X*10+Y)!=NULL) {
+        return true;
+    }
+    return false;
 }
 
 std::pair<int, int> Board::mousePositionToXY(Vec2 coordinates) {

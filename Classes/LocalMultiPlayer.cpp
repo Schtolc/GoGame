@@ -21,9 +21,8 @@ LocalMultiPlayer::~LocalMultiPlayer() {
 
 bool LocalMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    if (logic->checkStep(X, Y, currentPlayer->team())) {
+    if (logic->setChip(X, Y, currentPlayer->team())) {
         scene->placeChip(X, Y, currentPlayer->team());
-        logic->setChip(X,Y,currentPlayer->team());
         update();
         nextPlayer();
         return true;
@@ -35,7 +34,15 @@ bool LocalMultiPlayer::getXY(int X, int Y) {
 
 void LocalMultiPlayer::update() {
     //Добавить логику. изменить счет, вывести алерт, изменить статус игры
-
+//    for (int i = 0; i < 19; i++) {
+//        for (int j =0 ; j < 19; j++) {
+////            if (logic->getCell(i,j)==EMPTY_CELL) {
+////                if (scene->chipExist(i,j)) {
+//                    scene->removeChip(i,j);
+////                }
+////            }
+//        }
+//    }
 }
 
 void LocalMultiPlayer::passStep() {

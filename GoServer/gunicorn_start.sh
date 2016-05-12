@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd /home/pavelgolubev345/CocosWorkspace/GoGame/GoServer
-exec gunicorn -c gunicorn_conf.py GoGame:application
+cd /home/pavelgolubev345/CocosWorkspace/GoGameLogic/GoServer
+exec gunicorn -c gunicorn_conf.py GoGameLogic:application
 

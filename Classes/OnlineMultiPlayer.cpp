@@ -30,10 +30,9 @@ OnlineMultiPlayer::OnlineMultiPlayer(MainScene *s) : Game(s), GoServer(
 
 bool OnlineMultiPlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    if (logic->checkStep(X, Y, player.team())) {
+    if (logic->setChip(X, Y, player.team())) {
         scene->placeChip(X, Y, player.team());
         assert(GoServer.ServerMakeStep(X, Y, player.team()-FIRST_PLAYER, token));
-        logic->setChip(X,Y,player.team());
     // matrix[X][Y] = player.team()
         update();
         return true;

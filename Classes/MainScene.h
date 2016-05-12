@@ -30,6 +30,8 @@ public:
 
     void removeChip(int X, int Y);
 
+    bool chipExist(int X, int Y);
+
     void displayAlert(int status);
 
     void removeAlert();

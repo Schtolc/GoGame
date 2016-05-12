@@ -1,1 +1,1 @@
-<p>GoGame</p>
+<p>GoGameLogic</p>

@@ -42,6 +42,8 @@ public:
 
     void removeChip(int X, int Y);
 
+    bool chipExist(int X, int Y);
+
     std::pair<int, int> mousePositionToXY(Vec2 coordinates);
 };
 

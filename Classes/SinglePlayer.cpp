@@ -13,10 +13,9 @@ SinglePlayer::SinglePlayer(MainScene *layer) : Game(layer) {
 
 bool SinglePlayer::getXY(int X, int Y) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18);
-    if (logic->checkStep(X, Y, player.team())) {
+    if (logic->setChip(X, Y, player.team())) {
         scene->placeChip(X, Y, player.team());
         Locked = true;
-        logic->setChip(X,Y,player.team());
         update();
         AIstep();
         return true;
@@ -37,7 +36,7 @@ void SinglePlayer::AIstep() {
     do {
         X = std::rand() % 18;
         Y = std::rand() % 18;
-    } while (!logic->checkStep(X, Y, AI.team()));
+    } while (!logic->setChip(X, Y, AI.team()));
 
     //Бот ходит с задержкой
     CallFunc *callAIstep = CallFunc::create(CC_CALLBACK_0(MainScene::placeChip, scene, X, Y, AI.team()));

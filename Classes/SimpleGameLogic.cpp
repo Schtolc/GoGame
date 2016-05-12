@@ -16,9 +16,15 @@ bool SimpleGameLogic::checkStep(int X, int Y, int team) const {
     return matrix[X][Y] == EMPTY_CELL;
 }
 
-void SimpleGameLogic::setChip(int X, int Y, int team) {
+bool SimpleGameLogic::setChip(int X, int Y, int team) {
     assert(0 <= X && X <= 18 && 0 <= Y && Y <= 18 && team >= FIRST_PLAYER);
-    matrix[X][Y] = team;
+    if (checkStep(X,Y,team)) {
+        matrix[X][Y] = team;
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 int SimpleGameLogic::getCell(int X, int Y) const {

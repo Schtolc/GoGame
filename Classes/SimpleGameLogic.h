@@ -12,9 +12,7 @@ class SimpleGameLogic : public GameLogic {
 public:
     SimpleGameLogic();
 
-    bool checkStep(int X, int Y, int team) const;
-
-    void setChip(int X, int Y, int team);
+    bool setChip(int X, int Y, int team);
 
     int getCell(int X, int Y) const;
 
@@ -22,6 +20,7 @@ public:
 
 private:
     int matrix[19][19];
+    bool checkStep(int X, int Y, int team) const;
 };
 
 

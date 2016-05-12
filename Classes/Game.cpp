@@ -5,11 +5,12 @@
 #include "Game.h"
 #include "MainScene.h"
 #include "SimpleGameLogic.h"
+#include "GoGameLogic.h"
 
 Game::Game(MainScene *s) : Locked(false), gameStatus(GAME_GOING) {
     assert(s != NULL);
    //!!!!
-    logic = new SimpleGameLogic();
+    logic = new GoGameLogic();
     scene = s;
 }
 
